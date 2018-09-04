@@ -1,0 +1,410 @@
+.rich-container INPUT {
+	COLOR: #003c4a
+}
+
+.rich-input {
+	COLOR: #003c4a
+}
+
+.rich-container SELECT {
+	COLOR: #003c4a
+}
+
+.rich-select {
+	COLOR: #003c4a
+}
+
+.rich-container TEXTAREA {
+	COLOR: #003c4a
+}
+
+.rich-textarea {
+	COLOR: #003c4a
+}
+
+.rich-container BUTTON {
+	COLOR: #003c4a
+}
+
+.rich-button {
+	COLOR: #003c4a
+}
+
+.rich-container keygen {
+	COLOR: #003c4a
+}
+
+.rich-keygen {
+	COLOR: #003c4a
+}
+
+.rich-container ISINDEX {
+	COLOR: #003c4a
+}
+
+.rich-isindex {
+	COLOR: #003c4a
+}
+
+.rich-container LEGEND {
+	COLOR: #003c4a
+}
+
+.rich-legend {
+	COLOR: #003c4a
+}
+
+.rich-container A {
+	COLOR: #003c4a
+}
+
+.rich-link {
+	COLOR: #003c4a
+}
+
+.rich-container FIELDSET {
+	COLOR: #003c4a
+}
+
+.rich-fieldset {
+	COLOR: #003c4a
+}
+
+.rich-field {
+	COLOR: #003c4a
+}
+
+.rich-field-edit {
+	COLOR: #003c4a
+}
+
+.rich-field-error {
+	COLOR: #003c4a
+}
+
+.rich-button {
+	COLOR: #003c4a
+}
+
+.rich-button-disabled {
+	COLOR: #003c4a
+}
+
+.rich-button-over {
+	COLOR: #003c4a
+}
+
+.rich-button-press {
+	COLOR: #003c4a
+}
+
+.rich-container FIELDSET {
+	BORDER-BOTTOM: 1px solid;
+	BORDER-LEFT: 1px solid;
+	PADDING-BOTTOM: 10px;
+	PADDING-LEFT: 10px;
+	PADDING-RIGHT: 10px;
+	BORDER-TOP: 1px solid;
+	BORDER-RIGHT: 1px solid;
+	PADDING-TOP: 10px
+}
+
+.rich-fieldset {
+	BORDER-BOTTOM: 1px solid;
+	BORDER-LEFT: 1px solid;
+	PADDING-BOTTOM: 10px;
+	PADDING-LEFT: 10px;
+	PADDING-RIGHT: 10px;
+	BORDER-TOP: 1px solid;
+	BORDER-RIGHT: 1px solid;
+	PADDING-TOP: 10px
+}
+
+.rich-container HR {
+	BORDER-BOTTOM: 1px solid;
+	BORDER-LEFT: 1px solid;
+	BORDER-TOP: 1px solid;
+	BORDER-RIGHT: 1px solid
+}
+
+.rich-hr {
+	BORDER-BOTTOM: 1px solid;
+	BORDER-LEFT: 1px solid;
+	BORDER-TOP: 1px solid;
+	BORDER-RIGHT: 1px solid
+}
+
+.rich-container LEGEND {
+	FONT-WEIGHT: bold
+}
+
+.rich-legend {
+	FONT-WEIGHT: bold
+}
+
+.rich-container FORM {
+	PADDING-BOTTOM: 0px;
+	MARGIN: 0px;
+	PADDING-LEFT: 0px;
+	PADDING-RIGHT: 0px;
+	PADDING-TOP: 0px
+}
+
+.rich-form {
+	PADDING-BOTTOM: 0px;
+	MARGIN: 0px;
+	PADDING-LEFT: 0px;
+	PADDING-RIGHT: 0px;
+	PADDING-TOP: 0px
+}
+
+.rich-container FIELDSET {
+	BORDER-BOTTOM-COLOR: #adcbd6;
+	BORDER-TOP-COLOR: #adcbd6;
+	BORDER-RIGHT-COLOR: #adcbd6;
+	BORDER-LEFT-COLOR: #adcbd6
+}
+
+.rich-fieldset {
+	BORDER-BOTTOM-COLOR: #adcbd6;
+	BORDER-TOP-COLOR: #adcbd6;
+	BORDER-RIGHT-COLOR: #adcbd6;
+	BORDER-LEFT-COLOR: #adcbd6
+}
+
+.rich-container HR {
+	BORDER-BOTTOM-COLOR: #adcbd6;
+	BORDER-TOP-COLOR: #adcbd6;
+	BORDER-RIGHT-COLOR: #adcbd6;
+	BORDER-LEFT-COLOR: #adcbd6
+}
+
+.rich-hr {
+	BORDER-BOTTOM-COLOR: #adcbd6;
+	BORDER-TOP-COLOR: #adcbd6;
+	BORDER-RIGHT-COLOR: #adcbd6;
+	BORDER-LEFT-COLOR: #adcbd6
+}
+
+.rich-field {
+	BORDER-BOTTOM: #adcbd6 1px inset;
+	BORDER-LEFT: #adcbd6 1px inset;
+	BORDER-TOP: #adcbd6 1px inset;
+	BORDER-RIGHT: #adcbd6 1px inset
+}
+
+.rich-field-edit {
+	BORDER-BOTTOM: #adcbd6 1px inset;
+	BORDER-LEFT: #adcbd6 1px inset;
+	BORDER-TOP: #adcbd6 1px inset;
+	BORDER-RIGHT: #adcbd6 1px inset
+}
+
+.rich-field-error {
+	BORDER-BOTTOM: #adcbd6 1px inset;
+	BORDER-LEFT: #adcbd6 1px inset;
+	BORDER-TOP: #adcbd6 1px inset;
+	BORDER-RIGHT: #adcbd6 1px inset
+}
+
+.rich-field-edit {
+	BACKGROUND-COLOR: #feffda
+}
+
+.rich-button {
+	BORDER-BOTTOM: #adcbd6 1px solid;
+	TEXT-ALIGN: center;
+	BORDER-LEFT: #adcbd6 1px solid;
+	PADDING-BOTTOM: 2px;
+	PADDING-LEFT: 10px;
+	PADDING-RIGHT: 10px;
+	BACKGROUND-REPEAT: repeat-x;
+	BACKGROUND-POSITION: left top;
+	BORDER-TOP: #adcbd6 1px solid;
+	CURSOR: pointer;
+	BORDER-RIGHT: #adcbd6 1px solid;
+	PADDING-TOP: 2px
+}
+
+.rich-button-disabled {
+	BORDER-BOTTOM: #adcbd6 1px solid;
+	TEXT-ALIGN: center;
+	BORDER-LEFT: #adcbd6 1px solid;
+	PADDING-BOTTOM: 2px;
+	PADDING-LEFT: 10px;
+	PADDING-RIGHT: 10px;
+	BACKGROUND-REPEAT: repeat-x;
+	BACKGROUND-POSITION: left top;
+	BORDER-TOP: #adcbd6 1px solid;
+	CURSOR: pointer;
+	BORDER-RIGHT: #adcbd6 1px solid;
+	PADDING-TOP: 2px
+}
+
+.rich-button-over {
+	BORDER-BOTTOM: #adcbd6 1px solid;
+	TEXT-ALIGN: center;
+	BORDER-LEFT: #adcbd6 1px solid;
+	PADDING-BOTTOM: 2px;
+	PADDING-LEFT: 10px;
+	PADDING-RIGHT: 10px;
+	BACKGROUND-REPEAT: repeat-x;
+	BACKGROUND-POSITION: left top;
+	BORDER-TOP: #adcbd6 1px solid;
+	CURSOR: pointer;
+	BORDER-RIGHT: #adcbd6 1px solid;
+	PADDING-TOP: 2px
+}
+
+.rich-button-press {
+	BORDER-BOTTOM: #adcbd6 1px solid;
+	TEXT-ALIGN: center;
+	BORDER-LEFT: #adcbd6 1px solid;
+	PADDING-BOTTOM: 2px;
+	PADDING-LEFT: 10px;
+	PADDING-RIGHT: 10px;
+	BACKGROUND-REPEAT: repeat-x;
+	BACKGROUND-POSITION: left top;
+	BORDER-TOP: #adcbd6 1px solid;
+	CURSOR: pointer;
+	BORDER-RIGHT: #adcbd6 1px solid;
+	PADDING-TOP: 2px
+}
+
+.rich-box-border-color-subborder {
+	BORDER-BOTTOM-COLOR: #adcbd6;
+	BORDER-TOP-COLOR: #adcbd6;
+	BORDER-RIGHT-COLOR: #adcbd6;
+	BORDER-LEFT-COLOR: #adcbd6
+}
+
+.rich-box-border-color-general {
+	BORDER-BOTTOM-COLOR: #fff;
+	BORDER-TOP-COLOR: #fff;
+	BORDER-RIGHT-COLOR: #fff;
+	BORDER-LEFT-COLOR: #fff
+}
+
+.rich-box-border-color-panel {
+	BORDER-BOTTOM-COLOR: #adcbd6;
+	BORDER-TOP-COLOR: #adcbd6;
+	BORDER-RIGHT-COLOR: #adcbd6;
+	BORDER-LEFT-COLOR: #adcbd6
+}
+
+.rich-box-border-control-select {
+	BORDER-BOTTOM: 1px solid;
+	BORDER-LEFT: 1px solid;
+	BORDER-TOP: 1px solid;
+	BORDER-RIGHT: 1px solid
+}
+
+.rich-box-border-subborder {
+	BORDER-BOTTOM: 1px solid;
+	BORDER-LEFT: 1px solid;
+	BORDER-TOP: 1px solid;
+	BORDER-RIGHT: 1px solid
+}
+
+.rich-box-border-header {
+	BORDER-BOTTOM: 1px solid;
+	BORDER-LEFT: 1px solid;
+	BORDER-TOP: 1px solid;
+	BORDER-RIGHT: 1px solid
+}
+
+.rich-box-border-general {
+	BORDER-BOTTOM: 1px solid;
+	BORDER-LEFT: 1px solid;
+	BORDER-TOP: 1px solid;
+	BORDER-RIGHT: 1px solid
+}
+
+.rich-box-border-additional {
+	BORDER-BOTTOM: 1px solid;
+	BORDER-LEFT: 1px solid;
+	BORDER-TOP: 1px solid;
+	BORDER-RIGHT: 1px solid
+}
+
+.rich-box-border-panel {
+	BORDER-BOTTOM: 1px solid;
+	BORDER-LEFT: 1px solid;
+	BORDER-TOP: 1px solid;
+	BORDER-RIGHT: 1px solid
+}
+
+.rich-box-border-tip {
+	BORDER-BOTTOM: 1px solid;
+	BORDER-LEFT: 1px solid;
+	BORDER-TOP: 1px solid;
+	BORDER-RIGHT: 1px solid
+}
+
+.rich-box-border-table {
+	BORDER-BOTTOM: 1px solid;
+	BORDER-LEFT: 1px solid;
+	BORDER-TOP: 1px solid;
+	BORDER-RIGHT: 1px solid
+}
+
+.rich-box-border-subborder {
+	BORDER-BOTTOM-COLOR: #adcbd6;
+	BORDER-TOP-COLOR: #adcbd6;
+	BORDER-RIGHT-COLOR: #adcbd6;
+	BORDER-LEFT-COLOR: #adcbd6
+}
+
+.rich-box-border-general {
+	BORDER-BOTTOM-COLOR: #fff;
+	BORDER-TOP-COLOR: #fff;
+	BORDER-RIGHT-COLOR: #fff;
+	BORDER-LEFT-COLOR: #fff
+}
+
+.rich-box-border-panel {
+	BORDER-BOTTOM-COLOR: #adcbd6;
+	BORDER-TOP-COLOR: #adcbd6;
+	BORDER-RIGHT-COLOR: #adcbd6;
+	BORDER-LEFT-COLOR: #adcbd6
+}
+
+.rich-box-bgcolor-general {
+	BACKGROUND-COLOR: #fff
+}
+
+.rich-box-bgcolor-tab {
+	BACKGROUND-COLOR: #cedfe7
+}
+
+.rich-box-bgcolor-editor {
+	BACKGROUND-COLOR: #f1f1f1
+}
+
+.rich-box-bgcolor-edit {
+	BACKGROUND-COLOR: #feffda
+}
+
+.rich-text-color-header {
+	COLOR: #cedfe7
+}
+
+.rich-text-color-general {
+	COLOR: #003c4a
+}
+
+.rich-text-color-tab-disabled {
+	COLOR: #999
+}
+
+.rich-text-general {
+	COLOR: #003c4a
+}
+
+.rich-text-header {
+	COLOR: #cedfe7
+}
+
+.rich-text-tab-disabled {
+	COLOR: #999
+}

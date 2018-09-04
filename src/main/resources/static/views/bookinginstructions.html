@@ -1,0 +1,171 @@
+<div id="mainplaceholder">
+	<div>
+		<div pas-header></div>
+	</div>
+	<div class="container">
+		<div class="contentplaceholder">
+			<div
+				id="http-error-id"
+				class="http-error-messages"
+				http-error-messages></div>
+			<form name="bookingInstructionsForm">
+				<div class="maincontent">
+					<div class="pagecontentbar boldfont14">
+						<span translate>LABEL_BOOKING_INSTRUCTIONS</span>
+					</div>
+					<div class="h5"></div>
+					<table>
+						<tr>
+							<td
+								class="w150 boldfont12"
+								valign="top">
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<span translate>LABEL_REPORTINGPERIOD</span>
+							</td>
+							<td
+								class="w150 boldfont12"
+								valign="top">{{bookingInstructionsData.reportingPeriod |
+								dateformat:'yyyy-mm-dd hh:mm:ss':'mm/yyyy' }}</td>
+						</tr>
+						<tr>
+							<td
+								class="w150 boldfont12"
+								valign="top">
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<span translate>LABEL_STATUS_RUN</span>
+							</td>
+							<td
+								class="w150 boldfont12"
+								valign="top">{{bookingInstructionsData.statustitle}}</td>
+						</tr>
+						<tr>
+							<td
+								class="w150 boldfont12"
+								valign="top">
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<span translate>LABEL_WORKFLOW</span>
+							</td>
+							<td
+								class="w150 boldfont12"
+								valign="top">{{bookingInstructionsData.workflowType.name}}
+							</td>
+						</tr>
+					</table>
+					<table>
+						<tr>
+							<td>
+								<div class="h20"></div>
+							</td>
+							<td></td>
+						</tr>
+					</table>
+					<table>
+						<tr ng-show="bookingInstructionsData.hasBackGroundCalculations">
+							<td
+								class="w1080 warningmessage12"
+								valign="top">
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img
+									src="images/message-warning.png" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<span translate>LABEL_BACKGROUND_CALCULATIONS</span>
+							</td>
+						</tr>
+					</table>
+					<table>
+						<tr>
+							<td>
+								<div class="h20"></div>
+							</td>
+							<td></td>
+						</tr>
+					</table>
+					<table>
+						<tr>
+							<td
+								class="w150"
+								valign="top">
+								<div class="verticalbutton">
+									<button
+										class="button"
+										ng-click="downloadExcel()"
+										title="{{'LABEL_BUTTON_EXPORT_EXCEL'|translate}}">
+										<span translate>LABEL_BUTTON_EXPORT_EXCEL</span>
+									</button>
+								</div>
+								<!-- showCsvButton -->
+								<div
+									class="verticalbutton"
+									ng-show="showCsvButton">
+									<button
+										class="button"
+										ng-click="downloadCSV()"
+										title="{{'LABEL_BUTTON_EXPORT_CSV'|translate}}">
+										<span translate>LABEL_BUTTON_EXPORT_CSV</span>
+									</button>
+								</div>
+								<div class="verticalbutton">
+									<button
+										class="button"
+										ng-click="backToOverview()"
+										title="{{'LABEL_BUTTON_BACK'|translate}}">
+										<span translate>LABEL_BUTTON_BACK</span>
+									</button>
+								</div>
+							</td>
+							<td width="10px"></td>
+							<td valign="top">
+								<div class="mainlargedivblock">
+									<table
+										class="reporting insidemainlargedivblock"
+										border="1">
+										<tr>
+											<td class="w200 tableheadermatrix insidemainlargedivblocktd">
+												<span translate>LABEL_BUSINESS_SEGMENT</span>
+											</td>
+											<td class="w150 tableheadermatrix insidemainlargedivblocktd">
+												<span translate>LABEL_SG</span>
+											</td>
+											<td class="w150 tableheadermatrix insidemainlargedivblocktd">
+												<span translate>LABEL_RU</span>
+											</td>
+											<td class="w20 tableheadermatrix insidemainlargedivblocktd">
+												<span translate>LABEL_FRS</span>
+											</td>
+											<td class="w150 tableheadermatrix insidemainlargedivblocktd">
+												<span translate>LABEL_BS_AC_ACCOUNT</span>
+											</td>
+											<td class="w250 tableheadermatrix insidemainlargedivblocktd">
+												<span translate>LABEL_BALANCE_OUTSTANDING</span>
+											</td>
+										</tr>
+										<tr
+											ng-show="bookingInstructionsData.provisions.length > 0"
+											ng-repeat="bookingProvision in bookingInstructionsData.provisions">
+											<td class="w200  insidemainlargedivblocktd">
+												{{bookingProvision.businessSegmentLevel3Code}}</td>
+											<td class="w150  insidemainlargedivblocktd">
+												{{bookingProvision.sg}}</td>
+											<td class="w150  insidemainlargedivblocktd">
+												{{bookingProvision.ru}}</td>
+											<td class="w20  insidemainlargedivblocktd">
+												{{bookingProvision.frs}}</td>
+											<td class="w200  insidemainlargedivblocktd">
+												{{bookingProvision.bsacAccount}}</td>
+											<td class="w250  insidemainlargedivblocktd">
+												{{bookingProvision.totalProvisionAmount |decimalTruncate:0 |
+												numberFormat:"nl-NL":","}}</td>
+										</tr>
+									</table>
+								</div>
+							</td>
+						</tr>
+					</table>
+					<div class="h25"></div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<!--footer  -->
+	<div>
+		<div pas-footer></div>
+	</div>
+</div>

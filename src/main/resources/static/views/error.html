@@ -1,0 +1,25 @@
+<div id="mainplaceholder">
+	<div><div pas-header></div></div>
+<div class="container">
+	<div class="contentplaceholder">
+		<div http-error-messages="" class="http-error-messages xx-http-error-message" id="http-error-id" ng-repeat="message in messages">
+			<div class="mcf-notification-container" style="position:relative;" id="{{message.messageKey}}">
+				<div class="mcf-notification-icon mcf-notification-icon-warning" style="margin:-6px;position:absolute;"></div>
+				<div class="mcf-notification-message-container">
+					<p title="{{message.messageKey}}" style="margin-left:10px;margin-top:10px;">{{message.messageText}}</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="h25"></div>
+		<div align="center">
+			<button class="button" ng-click="gotoHome();" title="{{'LABEL_BUTTON_OK'|translate}}" ng-show="showOk">
+				<span translate>LABEL_BUTTON_OK</span>
+			</button>
+		</div>
+		
+	</div>
+</div>
+<!--footer  -->
+<div><div pas-footer></div></div>
+</div>
