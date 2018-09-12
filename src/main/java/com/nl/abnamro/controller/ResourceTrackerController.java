@@ -7,15 +7,20 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.List;
 import java.util.Optional;
 
-import javax.websocket.server.PathParam;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nl.abnamro.dataaccess.ResourceTrackerDAL;
@@ -27,8 +32,9 @@ import com.nl.abnamro.services.ResouceTrackerServicesImpl;
  * @author C33129
  *
  */
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping(value = "/home")
+@RequestMapping(value = "/api")
 public class ResourceTrackerController {
 	
 	
@@ -43,19 +49,31 @@ public class ResourceTrackerController {
 		
 	}
 	
+	@RequestMapping(value="/employees")
+	public List<ResourceDetails> getAllUsers() throws IOException{
+		System.out.println("inside get");
+		/**
+		 * To be Implemented
+		 */
+		List<ResourceDetails> resourceDetails = resoucerTrackerDal.findAll();
+		System.out.println(resourceDetails.size());
+		return resourceDetails;
+	}
 	
-	@RequestMapping(value="/insert")
-	public void insertUser() throws IOException{
+	
+	@RequestMapping(value="/employees/insert" ,method=RequestMethod.POST, headers = "Accept=application/json")
+	public void insertUser(@RequestBody ResourceDetailsJO resource,
+		      HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException{
 		System.out.println("inside hello");
-		ResourceDetailsJO resource = new ResourceDetailsJO();
-		resource.setFirstName("Rohit");
-		resource.setLastName("Sharma");
+		/*ResourceDetailsJO resource = new ResourceDetailsJO();
+		resource.setFirstName("Virat");
+		resource.setLastName("Kohli");
 		resource.setGender("Male");
 		resource.setMonth("JAN");
 		resource.setPhone("123456");
 		resource.setYear(1989);
 		resource.setDate(04);
-		resource.setEmail("prashant.verma@gmail.com");
+		resource.setEmail("prashant.verma@gmail.com");*/
 		
 		String dateOfBirth= resource.getMonth()+"-"+resource.getDate() +"-" +resource.getYear();
 		 File f = new File("C:\\Users\\C33129\\Documents\\Rahul_resume.doc");
@@ -79,7 +97,7 @@ public class ResourceTrackerController {
 	}
 	
 
-	@RequestMapping(value="/retrieve/id/{id}")
+	@RequestMapping(value="/employees/retrieve/id/{id}")
 	public void getuser(@PathVariable long id) throws IOException{
 		System.out.println("inside retrieve");
 		 String RETRIEVE_FOLDER= "C:\\Users\\C33129\\Documents\\getFromMongodb\\";
@@ -117,7 +135,7 @@ public class ResourceTrackerController {
 	}
 	
 
-	@RequestMapping(value="/update/id/{id}")
+	@RequestMapping(value="/employees/update/id/{id}")
 	public void updateUser(@PathVariable long id) throws IOException{
 		System.out.println("inside update");
 		 String RETRIEVE_FOLDER= "C:\\Users\\C33129\\Documents\\getFromMongodb\\";
@@ -164,7 +182,7 @@ public class ResourceTrackerController {
 
 	
 
-	@RequestMapping(value="/delete/id/{id}")
+	@RequestMapping(value="/employees/delete/id/{id}")
 	public void deleteUser(@PathVariable Object id) throws IOException{
 		System.out.println("inside delete");
 		 ResourceDetails resourceDetails= new ResourceDetails();

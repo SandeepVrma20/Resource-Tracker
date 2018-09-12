@@ -6,6 +6,7 @@ package com.nl.abnamro.dataaccess;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,14 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL{
 		query.addCriteria(Criteria.where("_id").in(resource.get_id()));
 		ResourceDetails val=mongoTemplate.findOne(query, ResourceDetails.class);
 		return val;
+	}
+
+	@Override
+	public List<ResourceDetails> findAll() {
+		System.out.println("inside find All");
+		 List<ResourceDetails> resourceList=mongoTemplate.findAll(ResourceDetails.class);
+		 System.out.println("resourceList------->"+ resourceList.size());
+		return resourceList;
 	}
 
 
@@ -71,9 +80,5 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL{
 		Query query = new Query();
 		query.addCriteria(Criteria.where("_id").in(resource.get_id()));
 		return mongoTemplate.findAndRemove(query, ResourceDetails.class);
-		
-		
-		 
 	}
-
 }

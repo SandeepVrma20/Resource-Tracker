@@ -1,5 +1,7 @@
 package com.nl.abnamro.dataaccess;
 
+import java.util.List;
+
 import com.nl.abnamro.entity.ResourceDetails;
 
 /**
@@ -7,6 +9,8 @@ import com.nl.abnamro.entity.ResourceDetails;
  *
  */
 public interface ResourceTrackerDAL {
+	
+	public List<ResourceDetails> findAll();
 	
 	public ResourceDetails findOne(ResourceDetails resource);
 	
