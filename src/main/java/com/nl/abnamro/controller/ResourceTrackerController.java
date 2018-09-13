@@ -75,7 +75,7 @@ public class ResourceTrackerController {
 		resource.setDate(04);
 		resource.setEmail("prashant.verma@gmail.com");*/
 		
-		String dateOfBirth= resource.getMonth()+"-"+resource.getDate() +"-" +resource.getYear();
+		//String dateOfBirth= resource.getMonth()+"-"+resource.getDate() +"-" +resource.getYear();
 		 File f = new File("C:\\Users\\C33129\\Documents\\Rahul_resume.doc");
 		 byte[] array = Files.readAllBytes(f.toPath());
 		
@@ -83,13 +83,19 @@ public class ResourceTrackerController {
 		//resourceDetails.set_id("1234");
 		resourceDetails.setFirstName(resource.getFirstName());
 		resourceDetails.setFileName(f.getName());
+		resourceDetails.setMiddleName(resource.getMiddleName());
 		resourceDetails.setLastName(resource.getLastName());
 		resourceDetails.setGender(resource.getGender());
 		resourceDetails.setPhone(resource.getPhone());
 		resourceDetails.setCreationDate(resource.getCreationDate());
 		resourceDetails.setTitle(resource.getTitle());
 		resourceDetails.setEmail(resource.getEmail());
-		resourceDetails.setDob(dateOfBirth);
+		resourceDetails.setDob(resource.getDob());
+		resourceDetails.setEmployeeId(resource.getEmployeeId());
+		resourceDetails.setAddressLine1(resource.getAddressLine1());
+		resourceDetails.setAddressLine2(resource.getAddressLine2());
+		resourceDetails.setPhone(resource.getPhone());
+		resourceDetails.setAlternatePhone(resource.getAlternatePhone());
 		resourceDetails.setFile(new Binary(BsonBinarySubType.BINARY,array));
 		
 		//resouceTrackerServicesImpl.saveUser(resourceDetails);

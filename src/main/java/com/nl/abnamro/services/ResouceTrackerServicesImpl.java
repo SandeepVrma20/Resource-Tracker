@@ -33,7 +33,7 @@ public class ResouceTrackerServicesImpl {
 		query.put("firstName", details.getFirstName());
 		ResourceDetails resource= new ResourceDetails();
 		//resource= resouceTrackerServices.findOne(query);
-		System.out.println(resource.getFileName() +"--"+resource.getAge());
+		System.out.println(resource.getFileName() );
 		return resouceTrackerServices.findById("5b77f20d105ae01f8c544380");
 		//BasicDBObject query = new BasicDBObject();
 		//query.put("fileName", "Sandeep_pic.jpg");
