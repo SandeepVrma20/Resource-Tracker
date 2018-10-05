@@ -4,7 +4,6 @@
 package com.nl.abnamro.entity;
 
 import java.util.Date;
-
 import org.bson.types.Binary;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -15,270 +14,262 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Document(collection = "Resource_Tracker")
 public class ResourceDetails {
-	
-	@Id
-	private Object _id;
-	
-	private String title;
-	private String firstName;
-	private String lastName;
-	private String middleName;
-	private String gender;
-	private String month;
-	private String email;
-	private String phone;
-	private Date dob;
-	private long employeeId;
-	private String alternatePhone;
-	private String addressLine1;
-	private String addressLine2;
-	private String city;
-	private String state;
-	private String country;
-	private String pinCode;
-	private Binary file;
-	private String fileName;
-	private String resume;
-	private Date creationDate = new Date();
-	
 
-	public String toString(){
-		return "first Name :" +this.firstName +
-				" Middle Name :" +this.middleName +
-				" last Name :" +this.lastName +
-				" email :" +this.email +
-				" phone no :" +this.phone +
-				" gender :" +this.gender +
-				" dob:" +this.dob +
-				" file Name :" +this.fileName ;
-				
-	}
+  @Id
+  private Object _id;
 
+  private String title;
+  private String firstName;
+  private String lastName;
+  private String middleName;
+  private String gender;
+  private String month;
+  private String email;
+  private String phone;
+  private Date dob;
+  private long employeeId;
+  private String alternatePhone;
+  private String addressLine1;
+  private String addressLine2;
+  private String city;
+  private String state;
+  private String country;
+  private String pinCode;
+  private Binary file;
+  private String fileName;
+  private String resume;
+  private Date creationDate = new Date();
 
-	public Object get_id() {
-		return _id;
-	}
 
+  public String toString() {
+    return "first Name :" + this.firstName + " Middle Name :" + this.middleName + " last Name :" + this.lastName
+        + " email :" + this.email + " phone no :" + this.phone + " gender :" + this.gender + " dob:" + this.dob
+        + " file Name :" + this.fileName;
 
-	public void set_id(Object _id) {
-		this._id = _id;
-	}
+  }
 
 
-	
+  public Object get_id() {
+    return _id;
+  }
 
-	public String getPhone() {
-		return phone;
-	}
 
+  public void set_id(Object _id) {
+    this._id = _id;
+  }
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
 
 
-	public Date getDob() {
-		return dob;
-	}
+  public String getPhone() {
+    return phone;
+  }
 
 
-	public void setDob(Date dob) {
-		this.dob = dob;
-	}
+  public void setPhone(String phone) {
+    this.phone = phone;
+  }
 
 
-	public String getTitle() {
-		return title;
-	}
+  public Date getDob() {
+    return dob;
+  }
 
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+  public void setDob(Date dob) {
+    this.dob = dob;
+  }
 
 
-	public String getFirstName() {
-		return firstName;
-	}
+  public String getTitle() {
+    return title;
+  }
 
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+  public void setTitle(String title) {
+    this.title = title;
+  }
 
 
-	public String getLastName() {
-		return lastName;
-	}
+  public String getFirstName() {
+    return firstName;
+  }
 
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
 
 
-	public String getMiddleName() {
-		return middleName;
-	}
+  public String getLastName() {
+    return lastName;
+  }
 
 
-	public void setMiddleName(String middleName) {
-		this.middleName = middleName;
-	}
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
 
 
-	public String getGender() {
-		return gender;
-	}
+  public String getMiddleName() {
+    return middleName;
+  }
 
 
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
+  public void setMiddleName(String middleName) {
+    this.middleName = middleName;
+  }
 
 
-	public String getMonth() {
-		return month;
-	}
+  public String getGender() {
+    return gender;
+  }
 
 
-	public void setMonth(String month) {
-		this.month = month;
-	}
+  public void setGender(String gender) {
+    this.gender = gender;
+  }
 
 
+  public String getMonth() {
+    return month;
+  }
 
 
-	public String getEmail() {
-		return email;
-	}
+  public void setMonth(String month) {
+    this.month = month;
+  }
 
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
 
+  public String getEmail() {
+    return email;
+  }
 
-	public String getResume() {
-		return resume;
-	}
 
+  public void setEmail(String email) {
+    this.email = email;
+  }
 
-	public void setResume(String resume) {
-		this.resume = resume;
-	}
 
+  public String getResume() {
+    return resume;
+  }
 
-	public Date getCreationDate() {
-		return creationDate;
-	}
 
+  public void setResume(String resume) {
+    this.resume = resume;
+  }
 
-	public void setCreationDate(Date creationDate) {
-		this.creationDate = creationDate;
-	}
 
+  public Date getCreationDate() {
+    return creationDate;
+  }
 
-	public long getEmployeeId() {
-		return employeeId;
-	}
 
+  public void setCreationDate(Date creationDate) {
+    this.creationDate = creationDate;
+  }
 
-	public void setEmployeeId(long employeeId) {
-		this.employeeId = employeeId;
-	}
 
+  public long getEmployeeId() {
+    return employeeId;
+  }
 
-	public String getAlternatePhone() {
-		return alternatePhone;
-	}
 
+  public void setEmployeeId(long employeeId) {
+    this.employeeId = employeeId;
+  }
 
-	public void setAlternatePhone(String alternatePhone) {
-		this.alternatePhone = alternatePhone;
-	}
 
+  public String getAlternatePhone() {
+    return alternatePhone;
+  }
 
-	public String getAddressLine1() {
-		return addressLine1;
-	}
 
+  public void setAlternatePhone(String alternatePhone) {
+    this.alternatePhone = alternatePhone;
+  }
 
-	public void setAddressLine1(String addressLine1) {
-		this.addressLine1 = addressLine1;
-	}
 
+  public String getAddressLine1() {
+    return addressLine1;
+  }
 
-	public String getAddressLine2() {
-		return addressLine2;
-	}
 
+  public void setAddressLine1(String addressLine1) {
+    this.addressLine1 = addressLine1;
+  }
 
-	public void setAddressLine2(String addressLine2) {
-		this.addressLine2 = addressLine2;
-	}
 
+  public String getAddressLine2() {
+    return addressLine2;
+  }
 
-	public String getCity() {
-		return city;
-	}
 
+  public void setAddressLine2(String addressLine2) {
+    this.addressLine2 = addressLine2;
+  }
 
-	public void setCity(String city) {
-		this.city = city;
-	}
 
+  public String getCity() {
+    return city;
+  }
 
-	public String getState() {
-		return state;
-	}
 
+  public void setCity(String city) {
+    this.city = city;
+  }
 
-	public void setState(String state) {
-		this.state = state;
-	}
 
+  public String getState() {
+    return state;
+  }
 
-	public String getCountry() {
-		return country;
-	}
 
+  public void setState(String state) {
+    this.state = state;
+  }
 
-	public void setCountry(String country) {
-		this.country = country;
-	}
 
+  public String getCountry() {
+    return country;
+  }
 
-	public String getPinCode() {
-		return pinCode;
-	}
 
+  public void setCountry(String country) {
+    this.country = country;
+  }
 
-	public void setPinCode(String pinCode) {
-		this.pinCode = pinCode;
-	}
 
+  public String getPinCode() {
+    return pinCode;
+  }
 
-	public Binary getFile() {
-		return file;
-	}
 
+  public void setPinCode(String pinCode) {
+    this.pinCode = pinCode;
+  }
 
-	public void setFile(Binary file) {
-		this.file = file;
-	}
 
+  public Binary getFile() {
+    return file;
+  }
 
-	public String getFileName() {
-		return fileName;
-	}
 
+  public void setFile(Binary file) {
+    this.file = file;
+  }
 
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
-	
-	
-	
+
+  public String getFileName() {
+    return fileName;
+  }
+
+
+  public void setFileName(String fileName) {
+    this.fileName = fileName;
+  }
+
+
 
 }
