@@ -9,10 +9,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.Optional;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.nl.abnamro.dataaccess.ResourceTrackerDAL;
 import com.nl.abnamro.entity.RequirementDetailsJO;
 import com.nl.abnamro.entity.RequirementGrpJO;
@@ -40,9 +37,7 @@ import com.nl.abnamro.services.ResouceTrackerServicesImpl;
 @RestController
 @RequestMapping(value = "/api")
 public class ResourceTrackerController {
-	
-	
-	
+
 	@Autowired
 	private ResouceTrackerServicesImpl resouceTrackerServicesImpl;
 	
@@ -54,7 +49,7 @@ public class ResourceTrackerController {
 	}
 	
 	
-	@RequestMapping(value="/requierments")
+	@RequestMapping(value="/requirements")
 	public List<RequirementDetailsJO> getAllRequierments() throws IOException{
 		System.out.println("inside get");
 		/**

@@ -1,18 +1,23 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: Resource-Tracker
+  data:
+    mongodb:
+      database: ApplicationTest
+      grid-fs-database: fieldstore
+      host: localhost
+      port: 27017
+
 #spring.mvc.view.prefix = /views/
 #spring.mvc.view.suffix = .html
-
-
 
 #Local MongoDB config
 #spring.data.mongodb.authentication-database=admin
 #spring.data.mongodb.username=root
 #spring.data.mongodb.password=root
-spring.data.mongodb.grid-fs-database=fieldstore
-spring.data.mongodb.database=ApplicationTest
-spring.data.mongodb.port=27017
-spring.data.mongodb.host=localhost
 
 # App config
-server.port=8080
-spring.application.name=Resource-Tracker
 #server.servlet.context-path=/user
+      

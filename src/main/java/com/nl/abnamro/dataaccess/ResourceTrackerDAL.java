@@ -11,6 +11,7 @@ import com.nl.abnamro.entity.TotalRequierments;
  *
  */
 public interface ResourceTrackerDAL {
+
 	
 	public List<ResourceDetails> findAll();
 	
@@ -29,6 +30,7 @@ public interface ResourceTrackerDAL {
 	public List<TotalRequierments> findAllGroupedReq();
 	
 	public List<RequirementDetailsJO> findReqBySkill(String skillCategory);
+
 
 
 }
