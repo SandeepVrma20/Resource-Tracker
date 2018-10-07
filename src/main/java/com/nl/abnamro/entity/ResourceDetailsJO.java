@@ -5,6 +5,8 @@ package com.nl.abnamro.entity;
 
 import java.util.Date;
 
+import org.springframework.web.multipart.MultipartFile;
+
 /**
  * @author C33129
  *
@@ -26,7 +28,7 @@ public class ResourceDetailsJO {
 	private int year;
 	private int date;
 	private String email;
-	private String resume;
+	private transient MultipartFile resume;
 	private Date creationDate = new Date();
 	private long employeeId;
 	private String alternatePhone;
@@ -37,8 +39,38 @@ public class ResourceDetailsJO {
 	private String country;
 	private String pinCode;
 	  
+	 private byte[] fileDataBytes;
+	  private String fileName;
+	  private String fileContentType;
+	  private transient MultipartFile fileData;
 	
-	
+	public byte[] getFileDataBytes() {
+		return fileDataBytes;
+	}
+	public void setFileDataBytes(byte[] fileDataBytes) {
+		this.fileDataBytes = fileDataBytes;
+	}
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+	public String getFileContentType() {
+		return fileContentType;
+	}
+	public void setFileContentType(String fileContentType) {
+		this.fileContentType = fileContentType;
+	}
+	public MultipartFile getFileData() {
+		return fileData;
+	}
+	public void setFileData(MultipartFile fileData) {
+		this.fileData = fileData;
+	}
+	public void setResume(MultipartFile resume) {
+		this.resume = resume;
+	}
 	public Date getDob() {
 		return dob;
 	}
@@ -173,12 +205,10 @@ public class ResourceDetailsJO {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getResume() {
+	public MultipartFile getResume() {
 		return resume;
 	}
-	public void setResume(String resume) {
-		this.resume = resume;
-	}
+	
 	
 
 }

@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,8 +25,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nl.abnamro.dataaccess.ResourceTrackerDAL;
+import com.nl.abnamro.entity.RequirementDetailsJO;
+import com.nl.abnamro.entity.RequirementGrpJO;
 import com.nl.abnamro.entity.ResourceDetails;
 import com.nl.abnamro.entity.ResourceDetailsJO;
+import com.nl.abnamro.entity.TotalRequierments;
 import com.nl.abnamro.services.ResouceTrackerServicesImpl;
 
 /**
@@ -49,6 +53,54 @@ public class ResourceTrackerController {
 		
 	}
 	
+	
+	@RequestMapping(value="/requierments")
+	public List<RequirementDetailsJO> getAllRequierments() throws IOException{
+		System.out.println("inside get");
+		/**
+		 * To be Implemented
+		 */
+		List<RequirementDetailsJO> requiermentDetails =resoucerTrackerDal.findAllRequierments();
+		System.out.println(requiermentDetails.size());
+		return requiermentDetails;
+	}
+	
+	
+	@RequestMapping(value="/requirements/grouped",method=RequestMethod.GET,headers="Accept=application/json")
+	public List<TotalRequierments>  getAllGroupedRequierments() throws IOException{
+		System.out.println("inside get getAllGroupedRequierments");
+		List<TotalRequierments> requierments=resoucerTrackerDal.findAllGroupedReq();
+		return requierments;
+	}
+	
+	
+	/*@RequestMapping(value="/requierments/retrieve/{skillCategory}")
+	public List<RequirementDetailsJO> getAllReqBySkill(@PathVariable String skillCategory) throws IOException{
+		System.out.println("inside get");
+		*//**
+		 * To be Implemented
+		 *//*
+		List<RequirementDetailsJO> requiermentDetails =resoucerTrackerDal.findReqBySkill(skillCategory);
+		System.out.println(requiermentDetails.size());
+		return requiermentDetails;
+	}*/
+	
+	
+		@RequestMapping(value="/requirements/retrieve",method=RequestMethod.PUT,headers="Accept=application/json")
+	public List<RequirementDetailsJO> getAllReqBySkill(@RequestBody RequirementDetailsJO requiermentJO) throws IOException{
+		System.out.println("inside get");
+		/**
+		 * To be Implemented
+		 */
+		if(null!=requiermentJO && requiermentJO.getSkillCategory() !=null){
+			List<RequirementDetailsJO> requiermentDetails =resoucerTrackerDal.findReqBySkill(requiermentJO.getSkillCategory());
+			System.out.println(requiermentDetails.size());
+			return requiermentDetails;
+		}
+		return null;
+		
+	}
+	
 	@RequestMapping(value="/employees")
 	public List<ResourceDetails> getAllUsers() throws IOException{
 		System.out.println("inside get");
@@ -63,21 +115,22 @@ public class ResourceTrackerController {
 	
 	@RequestMapping(value="/employees/insert" ,method=RequestMethod.POST, headers = "Accept=application/json")
 	public void insertUser(@RequestBody ResourceDetailsJO resource,
+			//@RequestParam("fileData") MultipartFile file,
 		      HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException{
 		System.out.println("inside hello");
-		/*ResourceDetailsJO resource = new ResourceDetailsJO();
-		resource.setFirstName("Virat");
-		resource.setLastName("Kohli");
-		resource.setGender("Male");
-		resource.setMonth("JAN");
-		resource.setPhone("123456");
-		resource.setYear(1989);
-		resource.setDate(04);
-		resource.setEmail("prashant.verma@gmail.com");*/
 		
-		//String dateOfBirth= resource.getMonth()+"-"+resource.getDate() +"-" +resource.getYear();
 		 File f = new File("C:\\Users\\C33129\\Documents\\Rahul_resume.doc");
 		 byte[] array = Files.readAllBytes(f.toPath());
+		//MultipartFile file =resource.getResume();
+		// File f = new File(file.getBytes());
+		 //byte[] array = Files.readAllBytes(file.);
+		// System.out.println(file);
+		 
+		    /*runDetails.setId(id);
+	        runDetails.setFileContentType(file.getContentType());
+	        runDetails.setFileDataBytes(file.getBytes());
+	        runDetails.setFileName(file.getOriginalFilename());
+	        runDetails.setFileData(file);*/
 		
 		ResourceDetails resourceDetails = new ResourceDetails();
 		//resourceDetails.set_id("1234");
@@ -186,8 +239,6 @@ public class ResourceTrackerController {
 		
 	}
 
-	
-
 	@RequestMapping(value="/employees/delete/id/{id}")
 	public void deleteUser(@PathVariable Object id) throws IOException{
 		System.out.println("inside delete");
@@ -197,40 +248,16 @@ public class ResourceTrackerController {
 		System.out.println("deletedResources--->"+ deletedResources.toString());
 	}
 	
-	
-	
-	
-	@RequestMapping(value="/abc")
-	public void getAlluser() throws IOException{
-		System.out.println("inside retrieve");
-		 String RETRIEVE_FOLDER= "C:\\Users\\C33129\\Documents\\getFromMongodb\\";
-		
-		 ResourceDetails resourceDetails= new ResourceDetails();
-		 resourceDetails.setFirstName("Sandy");
-		
-		Optional<ResourceDetails> resource=	resouceTrackerServicesImpl.getUser(resourceDetails);
-		 ResourceDetails value= resource.get();
-		 Binary fileReceive=value.getFile();
-		 if(fileReceive != null) {
-		        FileOutputStream fileOuputStream = null;
-		        try {
-		            fileOuputStream = new FileOutputStream(RETRIEVE_FOLDER + value.getFileName());
-		            fileOuputStream.write(fileReceive.getData());
-		        } catch (Exception e) {
-		            e.printStackTrace();
-		           
-		        } finally {
-		            if (fileOuputStream != null) {
-		                try {
-		                    fileOuputStream.close();
-		                } catch (IOException e) {
-		                    e.printStackTrace();
-		                   
-		                }
-		            }
-		        }
-		    }
-		
+	@RequestMapping(value="/requirements/insert" ,method=RequestMethod.POST, headers = "Accept=application/json")
+	public String insertRequierments(@RequestBody RequirementDetailsJO requiermentDetails,
+			HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException{
+		System.out.println("inside requiermentDetails");
+		String returnValue=resoucerTrackerDal.saveRequierments(requiermentDetails);
+		System.out.println("returnValue--->" +returnValue);
+		return returnValue;
 	}
+	
+	
+	
 	
 }
