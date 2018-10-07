@@ -91,7 +91,7 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL {
 	}
 
 	@Override
-	public String saveRequierments(RequirementDetailsJO requirementDetails) {
+	public boolean saveRequierments(RequirementDetailsJO requirementDetails) {
 		
 		BasicDBObject docs = new BasicDBObject();
 		docs.put("rgsId", requirementDetails.getRgsId());
@@ -100,10 +100,12 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL {
 		query.addCriteria(Criteria.where("rgsId").in(requirementDetails.getRgsId()).andOperator(Criteria.where ("reqId").in(requirementDetails.getReqId())));
 		RequirementDetailsJO val=mongoTemplate.findOne(query, RequirementDetailsJO.class);
 		if(null!=val){
-			return "Requirement is already present against the requirement id.!!!" ;
+			//return "Requirement is already present against the requirement id " + requirementDetails.getReqId();
+			return false;
 		}else{
 			mongoTemplate.save(requirementDetails);
-			return "Requirement Saved Successfully!!!!";
+			return true;
+			//return "Requirement Saved Successfully for Requirement Id " + requirementDetails.getReqId() ;
 		}
 	}
 

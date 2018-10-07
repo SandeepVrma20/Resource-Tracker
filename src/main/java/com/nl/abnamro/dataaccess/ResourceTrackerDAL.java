@@ -25,7 +25,7 @@ public interface ResourceTrackerDAL {
 	
 	public List<RequirementDetailsJO> findAllRequierments();
 	
-	public String saveRequierments(RequirementDetailsJO requirementDetails);
+	public boolean saveRequierments(RequirementDetailsJO requirementDetails);
 	
 	public List<TotalRequierments> findAllGroupedReq();
 	

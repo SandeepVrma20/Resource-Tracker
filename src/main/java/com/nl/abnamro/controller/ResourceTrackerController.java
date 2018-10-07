@@ -7,7 +7,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,15 +42,15 @@ public class ResourceTrackerController {
 
 	@Autowired
 	private ResouceTrackerServicesImpl resouceTrackerServicesImpl;
-	
+
 	private final ResourceTrackerDAL resoucerTrackerDal;
-	
+
 	public ResourceTrackerController(ResourceTrackerDAL resoucerTrackerDal){
 		this.resoucerTrackerDal=resoucerTrackerDal;
-		
+
 	}
-	
-	
+
+
 	@RequestMapping(value="/requirements")
 	public List<RequirementDetailsJO> getAllRequierments() throws IOException{
 		System.out.println("inside get");
@@ -59,30 +61,30 @@ public class ResourceTrackerController {
 		System.out.println(requiermentDetails.size());
 		return requiermentDetails;
 	}
-	
-	
+
+
 	@RequestMapping(value="/requirements/grouped",method=RequestMethod.GET,headers="Accept=application/json")
 	public List<TotalRequierments>  getAllGroupedRequierments() throws IOException{
 		System.out.println("inside get getAllGroupedRequierments");
 		List<TotalRequierments> requierments=resoucerTrackerDal.findAllGroupedReq();
 		return requierments;
 	}
-	
+
 	@RequestMapping(value="/requirements/retrieve/skillCategory/{skillCategory}")
-		public List<RequirementDetailsJO> getAllReqBySkill(@PathVariable String skillCategory ) throws IOException{
-			System.out.println("inside get");
-			/**
-			 * To be Implemented
-			 */
-			if(null!=skillCategory){
-				List<RequirementDetailsJO> requiermentDetails =resoucerTrackerDal.findReqBySkill(skillCategory);
-				System.out.println(requiermentDetails.size());
-				return requiermentDetails;
-			}
-			return null;
-			
+	public List<RequirementDetailsJO> getAllReqBySkill(@PathVariable String skillCategory ) throws IOException{
+		System.out.println("inside get");
+		/**
+		 * To be Implemented
+		 */
+		if(null!=skillCategory){
+			List<RequirementDetailsJO> requiermentDetails =resoucerTrackerDal.findReqBySkill(skillCategory);
+			System.out.println(requiermentDetails.size());
+			return requiermentDetails;
 		}
-		
+		return null;
+
+	}
+
 	@RequestMapping(value="/employees")
 	public List<ResourceDetails> getAllUsers() throws IOException{
 		System.out.println("inside get");
@@ -93,27 +95,27 @@ public class ResourceTrackerController {
 		System.out.println(resourceDetails.size());
 		return resourceDetails;
 	}
-	
-	
+
+
 	@RequestMapping(value="/employees/insert" ,method=RequestMethod.POST, headers = "Accept=application/json")
 	public void insertUser(@RequestBody ResourceDetailsJO resource,
 			//@RequestParam("fileData") MultipartFile file,
-		      HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException{
+			HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException{
 		System.out.println("inside hello");
-		
-		 File f = new File("C:\\Users\\C33129\\Documents\\Rahul_resume.doc");
-		 byte[] array = Files.readAllBytes(f.toPath());
+
+		File f = new File("C:\\Users\\C33129\\Documents\\Rahul_resume.doc");
+		byte[] array = Files.readAllBytes(f.toPath());
 		//MultipartFile file =resource.getResume();
 		// File f = new File(file.getBytes());
-		 //byte[] array = Files.readAllBytes(file.);
+		//byte[] array = Files.readAllBytes(file.);
 		// System.out.println(file);
-		 
-		    /*runDetails.setId(id);
+
+		/*runDetails.setId(id);
 	        runDetails.setFileContentType(file.getContentType());
 	        runDetails.setFileDataBytes(file.getBytes());
 	        runDetails.setFileName(file.getOriginalFilename());
 	        runDetails.setFileData(file);*/
-		
+
 		ResourceDetails resourceDetails = new ResourceDetails();
 		//resourceDetails.set_id("1234");
 		resourceDetails.setFirstName(resource.getFirstName());
@@ -132,114 +134,124 @@ public class ResourceTrackerController {
 		resourceDetails.setPhone(resource.getPhone());
 		resourceDetails.setAlternatePhone(resource.getAlternatePhone());
 		resourceDetails.setFile(new Binary(BsonBinarySubType.BINARY,array));
-		
+
 		//resouceTrackerServicesImpl.saveUser(resourceDetails);
 		resoucerTrackerDal.saveUser(resourceDetails);
 	}
-	
+
 
 	@RequestMapping(value="/employees/retrieve/id/{id}")
 	public void getuser(@PathVariable long id) throws IOException{
 		System.out.println("inside retrieve");
-		 String RETRIEVE_FOLDER= "C:\\Users\\C33129\\Documents\\getFromMongodb\\";
-		
-		 ResourceDetails resourceDetails= new ResourceDetails();
-		 resourceDetails.set_id(id);
-		 resoucerTrackerDal.findOne(resourceDetails);
+		String RETRIEVE_FOLDER= "C:\\Users\\C33129\\Documents\\getFromMongodb\\";
+
+		ResourceDetails resourceDetails= new ResourceDetails();
+		resourceDetails.set_id(id);
+		resoucerTrackerDal.findOne(resourceDetails);
 		ResourceDetails resource=	resoucerTrackerDal.findOne(resourceDetails);
-		 if(null!=resource){
-			 System.out.println("resource --> " +resource.toString());
-				
-			 Binary fileReceive=resource.getFile();
-			 if(fileReceive != null) {
-			        FileOutputStream fileOuputStream = null;
-			        try {
-			            fileOuputStream = new FileOutputStream(RETRIEVE_FOLDER + resource.getFileName());
-			            fileOuputStream.write(fileReceive.getData());
-			        } catch (Exception e) {
-			            e.printStackTrace();
-			           
-			        } finally {
-			            if (fileOuputStream != null) {
-			                try {
-			                    fileOuputStream.close();
-			                } catch (IOException e) {
-			                    e.printStackTrace();
-			                   
-			                }
-			            }
-			        }
-			    }
-		 }
-		
-		
+		if(null!=resource){
+			System.out.println("resource --> " +resource.toString());
+
+			Binary fileReceive=resource.getFile();
+			if(fileReceive != null) {
+				FileOutputStream fileOuputStream = null;
+				try {
+					fileOuputStream = new FileOutputStream(RETRIEVE_FOLDER + resource.getFileName());
+					fileOuputStream.write(fileReceive.getData());
+				} catch (Exception e) {
+					e.printStackTrace();
+
+				} finally {
+					if (fileOuputStream != null) {
+						try {
+							fileOuputStream.close();
+						} catch (IOException e) {
+							e.printStackTrace();
+
+						}
+					}
+				}
+			}
+		}
+
+
 	}
-	
+
 
 	@RequestMapping(value="/employees/update/id/{id}")
 	public void updateUser(@PathVariable long id) throws IOException{
 		System.out.println("inside update");
-		 String RETRIEVE_FOLDER= "C:\\Users\\C33129\\Documents\\getFromMongodb\\";
-		
-		 ResourceDetails resourceDetails= new ResourceDetails();
-		 resourceDetails.set_id(id);
+		String RETRIEVE_FOLDER= "C:\\Users\\C33129\\Documents\\getFromMongodb\\";
+
+		ResourceDetails resourceDetails= new ResourceDetails();
+		resourceDetails.set_id(id);
 		ResourceDetails resource=	resoucerTrackerDal.findOne(resourceDetails);
-		
-		
-		 if(null!=resource){
-			 File f = new File("C:\\Users\\C33129\\Documents\\Prashant_resume.doc");
-			 byte[] array = Files.readAllBytes(f.toPath());
-			
+
+
+		if(null!=resource){
+			File f = new File("C:\\Users\\C33129\\Documents\\Prashant_resume.doc");
+			byte[] array = Files.readAllBytes(f.toPath());
+
 			resource.setFileName(f.getName());
 			resource.setFile(new Binary(BsonBinarySubType.BINARY,array));
-			
+
 			resoucerTrackerDal.updateUser(resource);
-			
-			 
-			 Binary fileReceive=resource.getFile();
-			 if(fileReceive != null) {
-			        FileOutputStream fileOuputStream = null;
-			        try {
-			            fileOuputStream = new FileOutputStream(RETRIEVE_FOLDER + resource.getFileName());
-			            fileOuputStream.write(fileReceive.getData());
-			        } catch (Exception e) {
-			            e.printStackTrace();
-			           
-			        } finally {
-			            if (fileOuputStream != null) {
-			                try {
-			                    fileOuputStream.close();
-			                } catch (IOException e) {
-			                    e.printStackTrace();
-			                   
-			                }
-			            }
-			        }
-			    }
-		 }
-		
-		
+
+
+			Binary fileReceive=resource.getFile();
+			if(fileReceive != null) {
+				FileOutputStream fileOuputStream = null;
+				try {
+					fileOuputStream = new FileOutputStream(RETRIEVE_FOLDER + resource.getFileName());
+					fileOuputStream.write(fileReceive.getData());
+				} catch (Exception e) {
+					e.printStackTrace();
+
+				} finally {
+					if (fileOuputStream != null) {
+						try {
+							fileOuputStream.close();
+						} catch (IOException e) {
+							e.printStackTrace();
+
+						}
+					}
+				}
+			}
+		}
+
+
 	}
 
 	@RequestMapping(value="/employees/delete/id/{id}")
 	public void deleteUser(@PathVariable Object id) throws IOException{
 		System.out.println("inside delete");
-		 ResourceDetails resourceDetails= new ResourceDetails();
-		 resourceDetails.set_id(id);
-		 ResourceDetails deletedResources= resoucerTrackerDal.deleteUser(resourceDetails);
+		ResourceDetails resourceDetails= new ResourceDetails();
+		resourceDetails.set_id(id);
+		ResourceDetails deletedResources= resoucerTrackerDal.deleteUser(resourceDetails);
 		System.out.println("deletedResources--->"+ deletedResources.toString());
 	}
-	
+
 	@RequestMapping(value="/requirements/insert" ,method=RequestMethod.POST, headers = "Accept=application/json")
-	public String insertRequierments(@RequestBody RequirementDetailsJO requiermentDetails,
+	public Map<String,Object> insertRequierments(@RequestBody RequirementDetailsJO requiermentDetails,
 			HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException{
+		Map<String,Object> responseMsg=new HashMap<String,Object>();
 		System.out.println("inside requiermentDetails");
-		String returnValue=resoucerTrackerDal.saveRequierments(requiermentDetails);
-		System.out.println("returnValue--->" +returnValue);
-		return returnValue;
+		boolean isSaved=resoucerTrackerDal.saveRequierments(requiermentDetails);
+		System.out.println("returnValue--->" +isSaved);
+		responseMsg.put("reqId", requiermentDetails.getReqId());
+		responseMsg.put("flag", isSaved);
+		if(isSaved){
+			responseMsg.put("response", "Requirement Saved Successfully for Requirement Id " + requiermentDetails.getReqId());
+		}else{
+			responseMsg.put("response", "Requirement is already present against the requirement id " + requiermentDetails.getReqId());
+		}
+		
+		
+		return responseMsg;
 	}
-	
-	
-	
-	
+
+
+
+
 }
