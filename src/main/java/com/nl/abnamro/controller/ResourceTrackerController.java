@@ -68,34 +68,21 @@ public class ResourceTrackerController {
 		return requierments;
 	}
 	
-	
-	/*@RequestMapping(value="/requierments/retrieve/{skillCategory}")
-	public List<RequirementDetailsJO> getAllReqBySkill(@PathVariable String skillCategory) throws IOException{
-		System.out.println("inside get");
-		*//**
-		 * To be Implemented
-		 *//*
-		List<RequirementDetailsJO> requiermentDetails =resoucerTrackerDal.findReqBySkill(skillCategory);
-		System.out.println(requiermentDetails.size());
-		return requiermentDetails;
-	}*/
-	
-	
-		@RequestMapping(value="/requirements/retrieve",method=RequestMethod.PUT,headers="Accept=application/json")
-	public List<RequirementDetailsJO> getAllReqBySkill(@RequestBody RequirementDetailsJO requiermentJO) throws IOException{
-		System.out.println("inside get");
-		/**
-		 * To be Implemented
-		 */
-		if(null!=requiermentJO && requiermentJO.getSkillCategory() !=null){
-			List<RequirementDetailsJO> requiermentDetails =resoucerTrackerDal.findReqBySkill(requiermentJO.getSkillCategory());
-			System.out.println(requiermentDetails.size());
-			return requiermentDetails;
+	@RequestMapping(value="/requirements/retrieve/skillCategory/{skillCategory}")
+		public List<RequirementDetailsJO> getAllReqBySkill(@PathVariable String skillCategory ) throws IOException{
+			System.out.println("inside get");
+			/**
+			 * To be Implemented
+			 */
+			if(null!=skillCategory){
+				List<RequirementDetailsJO> requiermentDetails =resoucerTrackerDal.findReqBySkill(skillCategory);
+				System.out.println(requiermentDetails.size());
+				return requiermentDetails;
+			}
+			return null;
+			
 		}
-		return null;
 		
-	}
-	
 	@RequestMapping(value="/employees")
 	public List<ResourceDetails> getAllUsers() throws IOException{
 		System.out.println("inside get");
