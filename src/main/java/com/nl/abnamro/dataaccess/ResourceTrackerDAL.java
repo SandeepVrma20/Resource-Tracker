@@ -30,7 +30,10 @@ public interface ResourceTrackerDAL {
 	public List<TotalRequierments> findAllGroupedReq();
 	
 	public List<RequirementDetailsJO> findReqBySkill(String skillCategory);
+	
+	public boolean updateRequierments(RequirementDetailsJO requirementDetails);
 
+	public RequirementDetailsJO findRequirementById(Long reqId);
 
 
 }

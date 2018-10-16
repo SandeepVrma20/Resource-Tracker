@@ -139,6 +139,15 @@ public class ResourceTrackerController {
 		resoucerTrackerDal.saveUser(resourceDetails);
 	}
 
+	@RequestMapping(value="/requirements/id/{id}")
+	public RequirementDetailsJO getRequiermentById(@PathVariable long id) throws IOException{
+		System.out.println("inside get" +id);
+		
+		RequirementDetailsJO requiermentDetails =resoucerTrackerDal.findRequirementById(id);
+		System.out.println(requiermentDetails);
+		return requiermentDetails;
+	}
+	
 
 	@RequestMapping(value="/employees/retrieve/id/{id}")
 	public void getuser(@PathVariable long id) throws IOException{
@@ -237,6 +246,7 @@ public class ResourceTrackerController {
 			HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException{
 		Map<String,Object> responseMsg=new HashMap<String,Object>();
 		System.out.println("inside requiermentDetails");
+		System.out.println(requiermentDetails.getStartDate());
 		boolean isSaved=resoucerTrackerDal.saveRequierments(requiermentDetails);
 		System.out.println("returnValue--->" +isSaved);
 		responseMsg.put("reqId", requiermentDetails.getReqId());
@@ -251,6 +261,26 @@ public class ResourceTrackerController {
 		return responseMsg;
 	}
 
+	
+	@RequestMapping(value="/requirements/update" ,method=RequestMethod.PUT, headers = "Accept=application/json")
+	public Map<String,Object> updatRequierments(@RequestBody RequirementDetailsJO requiermentDetails,
+			HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException{
+		Map<String,Object> responseMsg=new HashMap<String,Object>();
+		System.out.println("inside requiermentDetails");
+		System.out.println(requiermentDetails.getStartDate());
+		boolean isSaved=resoucerTrackerDal.updateRequierments(requiermentDetails);
+		System.out.println("returnValue--->" +isSaved);
+		responseMsg.put("reqId", requiermentDetails.getReqId());
+		responseMsg.put("flag", isSaved);
+		if(isSaved){
+			responseMsg.put("response", "Requirement Updated Successfully for Requirement Id " + requiermentDetails.getReqId());
+		}else{
+			responseMsg.put("response", "Requirement is not Updated for requirement id " + requiermentDetails.getReqId());
+		}
+		
+		
+		return responseMsg;
+	}
 
 
 

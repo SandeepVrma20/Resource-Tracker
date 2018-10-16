@@ -16,8 +16,10 @@ import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.GroupOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 import com.mongodb.BasicDBObject;
+import com.mongodb.client.result.UpdateResult;
 import com.nl.abnamro.entity.RequirementDetailsJO;
 import com.nl.abnamro.entity.RequirementGrpJO;
 import com.nl.abnamro.entity.ResourceDetails;
@@ -100,13 +102,11 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL {
 		query.addCriteria(Criteria.where("rgsId").in(requirementDetails.getRgsId()).andOperator(Criteria.where ("reqId").in(requirementDetails.getReqId())));
 		RequirementDetailsJO val=mongoTemplate.findOne(query, RequirementDetailsJO.class);
 		if(null!=val){
-			//return "Requirement is already present against the requirement id " + requirementDetails.getReqId();
-			return false;
+				return false;
 		}else{
 			mongoTemplate.save(requirementDetails);
 			return true;
-			//return "Requirement Saved Successfully for Requirement Id " + requirementDetails.getReqId() ;
-		}
+			}
 	}
 
 	@Override
@@ -155,5 +155,64 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL {
     query.addCriteria(Criteria.where("_id").in(resource.get_id()));
     return mongoTemplate.findAndRemove(query, ResourceDetails.class);
   }
+
+@Override
+public boolean updateRequierments(RequirementDetailsJO requirementDetails) {
+
+	BasicDBObject docs = new BasicDBObject();
+	docs.put("reqId", requirementDetails.getReqId());
+	Query query = new Query();
+	query.addCriteria(Criteria.where ("reqId").in(requirementDetails.getReqId()));
+	query.fields().include("reqId");
+	Update update= new Update();
+	update.set("account", requirementDetails.getAccount());
+	update.set("positionOwner", requirementDetails.getPositionOwner());
+	update.set("rgsId", requirementDetails.getRgsId());
+	update.set("openDate", requirementDetails.getOpenDate());
+	update.set("position", requirementDetails.getPosition());
+	update.set("skillCategory", requirementDetails.getSkillCategory());
+	update.set("mainSkill", requirementDetails.getMainSkill());
+	update.set("additionalSkill", requirementDetails.getAdditionalSkill());
+	update.set("domain", requirementDetails.getDomain());
+	update.set("projectName", requirementDetails.getProjectName());
+	update.set("expBand", requirementDetails.getExpBand());
+	update.set("eucRefId", requirementDetails.getEucRefId());
+	update.set("site", requirementDetails.getSite());
+	update.set("location", requirementDetails.getLocation());
+	update.set("startDate", requirementDetails.getStartDate());
+	update.set("reqType", requirementDetails.getReqType());
+	update.set("reqClass", requirementDetails.getReqClass());
+	update.set("contractor", requirementDetails.getContractor());
+	update.set("trainee", requirementDetails.getTrainee());
+	update.set("revenueWithinQtr", requirementDetails.getRevenueWithinQtr());
+	update.set("status", requirementDetails.getStatus());
+	update.set("employeeId", requirementDetails.getEmployeeId());
+	update.set("resourceName", requirementDetails.getResourceName());
+	update.set("closedDate", requirementDetails.getClosedDate());
+	update.set("onboardDate", requirementDetails.getOnboardDate());
+	update.set("won", requirementDetails.getWon());
+	update.set("allocationDate", requirementDetails.getAllocationDate());
+	update.set("closedBy", requirementDetails.getClosedBy());
+	update.set("remarks", requirementDetails.getRemarks());
+	UpdateResult val=mongoTemplate.updateFirst(query, update, RequirementDetailsJO.class);
+	System.out.println("val-->" +val);
+	if(null!=val && val.getMatchedCount()==val.getModifiedCount()){
+		return true;
+	}else{
+		return false;
+	}
+		
+}
+
+@Override
+public RequirementDetailsJO findRequirementById(Long reqId) {
+  System.out.println("inside find one");
+  BasicDBObject docs = new BasicDBObject();
+  docs.put("reqId", reqId);
+  Query query = new Query();
+  query.addCriteria(Criteria.where("reqId").in(reqId));
+  RequirementDetailsJO val = mongoTemplate.findOne(query, RequirementDetailsJO.class);
+  return val;
+}
 
 }
