@@ -10,26 +10,25 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.nl.abnamro.dataaccess.ResourceTrackerDAL;
+import com.nl.abnamro.entity.LoginDetailsJO;
 import com.nl.abnamro.entity.RequirementDetailsJO;
-import com.nl.abnamro.entity.RequirementGrpJO;
 import com.nl.abnamro.entity.ResourceDetails;
 import com.nl.abnamro.entity.ResourceDetailsJO;
-import com.nl.abnamro.entity.TotalRequierments;
-import com.nl.abnamro.services.ResouceTrackerServicesImpl;
+import com.nl.abnamro.entity.TotalRequirements;
 
 /**
  * @author C33129
@@ -39,9 +38,6 @@ import com.nl.abnamro.services.ResouceTrackerServicesImpl;
 @RestController
 @RequestMapping(value = "/api")
 public class ResourceTrackerController {
-
-	@Autowired
-	private ResouceTrackerServicesImpl resouceTrackerServicesImpl;
 
 	private final ResourceTrackerDAL resoucerTrackerDal;
 
@@ -64,9 +60,9 @@ public class ResourceTrackerController {
 
 
 	@RequestMapping(value="/requirements/grouped",method=RequestMethod.GET,headers="Accept=application/json")
-	public List<TotalRequierments>  getAllGroupedRequierments() throws IOException{
+	public List<TotalRequirements>  getAllGroupedRequierments() throws IOException{
 		System.out.println("inside get getAllGroupedRequierments");
-		List<TotalRequierments> requierments=resoucerTrackerDal.findAllGroupedReq();
+		List<TotalRequirements> requierments=resoucerTrackerDal.findAllGroupedReq();
 		return requierments;
 	}
 
@@ -135,8 +131,7 @@ public class ResourceTrackerController {
 		resourceDetails.setAlternatePhone(resource.getAlternatePhone());
 		resourceDetails.setFile(new Binary(BsonBinarySubType.BINARY,array));
 
-		//resouceTrackerServicesImpl.saveUser(resourceDetails);
-		resoucerTrackerDal.saveUser(resourceDetails);
+		resoucerTrackerDal.createEmployee(resourceDetails);
 	}
 
 	@RequestMapping(value="/requirements/id/{id}")
@@ -257,7 +252,6 @@ public class ResourceTrackerController {
 			responseMsg.put("response", "Requirement is already present against the requirement id " + requiermentDetails.getReqId());
 		}
 		
-		
 		return responseMsg;
 	}
 
@@ -281,7 +275,43 @@ public class ResourceTrackerController {
 		
 		return responseMsg;
 	}
-
-
+	
+	
+	@RequestMapping(value="/user/insert" ,method=RequestMethod.POST, headers = "Accept=application/json")
+	public Map<String,Object> createUsers(@RequestBody LoginDetailsJO loginDetails,
+			HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException{
+		Map<String,Object> responseMsg=new HashMap<String,Object>();
+		System.out.println("inside user ");
+		boolean isSaved=resoucerTrackerDal.createUser(loginDetails);
+		System.out.println("returnValue--->" +isSaved);
+		responseMsg.put("employeeId", loginDetails.getEmployeeId());
+		responseMsg.put("flag", isSaved);
+		if(isSaved){
+			responseMsg.put("response", "User Saved Successfully with employee id  " + loginDetails.getEmployeeId());
+		}else{
+			responseMsg.put("response", "User is already present in the system with employee id " + loginDetails.getEmployeeId());
+		}
+		
+		return responseMsg;
+	}
+	
+	
+	@RequestMapping(value="/user/employeeId",method=RequestMethod.POST,headers="Accept=application/json")
+	public Map<String,Object> getUserById(@RequestBody LoginDetailsJO loginDetails,
+			HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException{
+		System.out.println("inside get getUserById");
+		Map<String,Object> responseMsg=new HashMap<String,Object>();
+		responseMsg.put("employeeId", loginDetails.getEmployeeId());
+		LoginDetailsJO loginDetail=resoucerTrackerDal.getUserById(loginDetails);
+		if(null!=loginDetail){
+			responseMsg.put("response", "Successfully Login !!!");
+			responseMsg.put("isSuccess", "true");
+		}else{
+			responseMsg.put("response", "User Id and Password are incorrect");
+			responseMsg.put("isSuccess", "false");
+			
+	}
+		return responseMsg;
+	}
 
 }

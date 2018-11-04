@@ -4,7 +4,6 @@
 package com.nl.abnamro.entity;
 
 import java.util.Date;
-
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -14,64 +13,69 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class ResourceDetailsJO {
 
-	  private long id;
+  private long id;
 
-	  private String age;
-	  private String phone;
-	  private Date dob;
-	  private String title;
-	  private String firstName;
-	  private String lastName;
-	  private String middleName;
-	  private String gender;
-	  private String month;
-	  private int year;
-	  private int date;
-	  private String email;
-	  private String resume;
-	  private Date creationDate = new Date();
-	  private long employeeId;
-	  private String alternatePhone;
-	  private String addressLine1;
-	  private String addressLine2;
-	  private String city;
-	  private String state;
-	  private String country;
-	  private String pinCode;
+  private String age;
+  private String phone;
+  private Date dob;
+  private String title;
+  private String firstName;
+  private String lastName;
+  private String middleName;
+  private String gender;
+  private String month;
+  private int year;
+  private int date;
+  private String email;
+  private String resume;
+  private Date creationDate = new Date();
+  private long employeeId;
+  private String alternatePhone;
+  private String addressLine1;
+  private String addressLine2;
+  private String city;
+  private String state;
+  private String country;
+  private String pinCode;
 
 
 
-	  
-	 private byte[] fileDataBytes;
-	  private String fileName;
-	  private String fileContentType;
-	  private transient MultipartFile fileData;
-	
-	public byte[] getFileDataBytes() {
-		return fileDataBytes;
-	}
-	public void setFileDataBytes(byte[] fileDataBytes) {
-		this.fileDataBytes = fileDataBytes;
-	}
-	public String getFileName() {
-		return fileName;
-	}
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
-	public String getFileContentType() {
-		return fileContentType;
-	}
-	public void setFileContentType(String fileContentType) {
-		this.fileContentType = fileContentType;
-	}
-	public MultipartFile getFileData() {
-		return fileData;
-	}
-	public void setFileData(MultipartFile fileData) {
-		this.fileData = fileData;
-	}
+  private byte[] fileDataBytes;
+  private String fileName;
+  private String fileContentType;
+  private transient MultipartFile fileData;
 
+  public byte[] getFileDataBytes() {
+    return fileDataBytes;
+  }
+
+  public void setFileDataBytes(byte[] fileDataBytes) {
+    this.fileDataBytes = fileDataBytes;
+  }
+
+  public String getFileName() {
+    return fileName;
+  }
+
+  public void setFileName(String fileName) {
+    this.fileName = fileName;
+  }
+
+  public String getFileContentType() {
+    return fileContentType;
+  }
+
+  public void setFileContentType(String fileContentType) {
+    this.fileContentType = fileContentType;
+  }
+
+  public MultipartFile getFileData() {
+    return fileData;
+  }
+
+  public void setFileData(MultipartFile fileData) {
+    this.fileData = fileData;
+  }
 
 
 

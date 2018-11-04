@@ -2,10 +2,9 @@ package com.nl.abnamro.dataaccess;
 
 import java.util.List;
 
-import com.nl.abnamro.entity.LoginDetailsJO;
 import com.nl.abnamro.entity.RequirementDetailsJO;
 import com.nl.abnamro.entity.ResourceDetails;
-import com.nl.abnamro.entity.TotalRequirements;
+import com.nl.abnamro.entity.TotalRequierments;
 
 /**
  * @author C33129
@@ -13,11 +12,12 @@ import com.nl.abnamro.entity.TotalRequirements;
  */
 public interface ResourceTrackerDAL {
 
+	
 	public List<ResourceDetails> findAll();
 	
 	public ResourceDetails findOne(ResourceDetails resource);
 	
-	public void createEmployee(ResourceDetails resource);
+	public void saveUser(ResourceDetails resource);
 	
 	public ResourceDetails updateUser(ResourceDetails resource);
 	
@@ -27,18 +27,13 @@ public interface ResourceTrackerDAL {
 	
 	public boolean saveRequierments(RequirementDetailsJO requirementDetails);
 	
-	public List<TotalRequirements> findAllGroupedReq();
+	public List<TotalRequierments> findAllGroupedReq();
 	
 	public List<RequirementDetailsJO> findReqBySkill(String skillCategory);
 	
 	public boolean updateRequierments(RequirementDetailsJO requirementDetails);
 
 	public RequirementDetailsJO findRequirementById(Long reqId);
-	
-	public boolean createUser(LoginDetailsJO loginDetails);
-	
-	public LoginDetailsJO getUserById(LoginDetailsJO loginDetails);
-
 
 
 }
