@@ -3,7 +3,9 @@
  */
 package com.nl.abnamro.entity;
 
-import java.util.Date;
+
+
+import java.sql.Date;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -13,7 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  *
  */
 @Document(collection = "Requierment_Tracker")
-public class RequirementDetailsJO {
+public class RequirementDetails {
 
   @Id
   private Object _id;
@@ -92,6 +94,7 @@ public long getRgsId() {
     this.location = location;
   }
 
+ 
 
   public Date getStartDate() {
 	return startDate;
@@ -249,7 +252,7 @@ public String getReqType() {
     this.positionOwner = positionOwner;
   }
 
-  
+ 
 
 public Date getOpenDate() {
 	return openDate;

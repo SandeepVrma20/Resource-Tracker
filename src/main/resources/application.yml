@@ -21,6 +21,7 @@ spring:
       grid-fs-database: fieldstore
       host: localhost
       port: 27017
+    
 
 #spring.mvc.view.prefix = /views/
 #spring.mvc.view.suffix = .html

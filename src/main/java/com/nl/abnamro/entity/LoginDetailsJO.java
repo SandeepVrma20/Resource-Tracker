@@ -22,12 +22,37 @@ public class LoginDetailsJO {
 	private String userName;
 	private String password;
 	private String emailId;
+	private String secretQuestion;
+	private String answer;
+	private String phoneNo;
+	private boolean isAdmin =false;
 	
 	
 	
-	
-	
-	
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+	public String getSecretQuestion() {
+		return secretQuestion;
+	}
+	public void setSecretQuestion(String secretQuestion) {
+		this.secretQuestion = secretQuestion;
+	}
+	public String getAnswer() {
+		return answer;
+	}
+	public void setAnswer(String answer) {
+		this.answer = answer;
+	}
+	public String getPhoneNo() {
+		return phoneNo;
+	}
+	public void setPhoneNo(String phoneNo) {
+		this.phoneNo = phoneNo;
+	}
 	public Object get_id() {
 		return _id;
 	}

@@ -3,6 +3,10 @@
  */
 package com.nl.abnamro.entity;
 
+
+
+import java.sql.Date;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -20,7 +24,7 @@ public class RequirementGrpJO {
   private long reqId;
   private String account;
   private String positionOwner;
-  private String openDate;
+  private Date openDate;
   private String position;
   private String skillCategory;
   private String mainSkill;
@@ -76,15 +80,17 @@ public class RequirementGrpJO {
     this.positionOwner = positionOwner;
   }
 
-  public String getOpenDate() {
-    return openDate;
-  }
+  
 
-  public void setOpenDate(String openDate) {
-    this.openDate = openDate;
-  }
+  public Date getOpenDate() {
+	return openDate;
+}
 
-  public String getPosition() {
+public void setOpenDate(Date openDate) {
+	this.openDate = openDate;
+}
+
+public String getPosition() {
     return position;
   }
 

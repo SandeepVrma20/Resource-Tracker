@@ -11,8 +11,55 @@ public class TotalRequirements {
 
   private String mainSkill;
   private String count;
+  private String positionOwner;
+  private String domain;
+  private String projectName;
+  private String response;
+  private String monthWise;
+  
 
-  public String getMainSkill() {
+  
+  public String getMonthWise() {
+	return monthWise;
+}
+
+public void setMonthWise(String monthWise) {
+	this.monthWise = monthWise;
+}
+
+public String getResponse() {
+	return response;
+}
+
+public void setResponse(String response) {
+	this.response = response;
+}
+
+public String getPositionOwner() {
+	return positionOwner;
+}
+
+public void setPositionOwner(String positionOwner) {
+	this.positionOwner = positionOwner;
+}
+
+public String getDomain() {
+	return domain;
+}
+
+public void setDomain(String domain) {
+	this.domain = domain;
+}
+
+public String getProjectName() {
+	return projectName;
+}
+
+public void setProjectName(String projectName) {
+	this.projectName = projectName;
+}
+
+public String getMainSkill() {
     return mainSkill;
   }
 
