@@ -6,6 +6,7 @@ package com.nl.abnamro.dataaccess;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,7 +44,7 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL {
 	private MongoTemplate mongoTemplate;
 
 	public static final String OPEN_DATE_FORMAT="EEE MMM d HH:mm:ss zzz yyyy";
-	
+
 	@Override
 	public ResourceDetails findOne(ResourceDetails resource) {
 		System.out.println("inside find one");
@@ -74,7 +75,7 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL {
 		}
 		return allSkills;
 	}
-	
+
 
 	@Override
 	public void createEmployee(ResourceDetails resource) {
@@ -101,8 +102,8 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL {
 
 
 	private java.sql.Date convertUtilToSqlDate(java.util.Date utilDate){
-		  return new java.sql.Date(utilDate.getTime());
-	  }
+		return new java.sql.Date(utilDate.getTime());
+	}
 
 	@Override
 	public List<RequirementDetailsJO> findAllRequierments() {
@@ -110,18 +111,18 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL {
 		List<RequirementDetailsJO> requiermentList=mongoTemplate.findAll(RequirementDetailsJO.class);
 		System.out.println("resourceList------->"+ requiermentList.size());
 		List<RequirementDetailsJO> requiermentDetailList = new ArrayList<>();
-		
+
 		for(RequirementDetailsJO requirements: requiermentList){
 			if(null!=requirements.getOpenDate()){
-			   requirements.setOpenDate(convertUtilToSqlDate(requirements.getOpenDate()));
-			  }
-			
+				requirements.setOpenDate(convertUtilToSqlDate(requirements.getOpenDate()));
+			}
+
 			if(null!=requirements.getStartDate()){
-			 	requirements.setStartDate(convertUtilToSqlDate(requirements.getStartDate()));
+				requirements.setStartDate(convertUtilToSqlDate(requirements.getStartDate()));
 			}
 			requiermentDetailList.add(requirements);
 		}
-		
+
 		return requiermentList;
 	}
 
@@ -156,10 +157,10 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL {
 		}else if(null!=filterType && filterType.equalsIgnoreCase("ownerwise")){
 			group =  Aggregation.group("positionOwner").count().as("total");
 		}
-		
+
 		Aggregation aggregation  = Aggregation.newAggregation(group);
 		AggregationResults<RequirementGrpJO> requiermentList =mongoTemplate.aggregate(aggregation, 
-							RequirementGrpJO.class, RequirementGrpJO.class);
+				RequirementGrpJO.class, RequirementGrpJO.class);
 		System.out.println("resourceList------->"+ requiermentList.getMappedResults().size());
 		List<RequirementGrpJO> requierments= requiermentList.getMappedResults();
 		List<TotalRequirements> reqList= new ArrayList<TotalRequirements>();
@@ -168,14 +169,14 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL {
 				TotalRequirements requierment= new TotalRequirements();
 				requierment.setCount(req.getTotal());
 				if(null!=filterType && filterType.equalsIgnoreCase("skillwise"))
-				 requierment.setMainSkill(req.get_id());
+					requierment.setMainSkill(req.get_id());
 				if(null!=filterType && filterType.equalsIgnoreCase("domainwise"))
-					 requierment.setDomain(req.get_id());
+					requierment.setDomain(req.get_id());
 				if(null!=filterType && filterType.equalsIgnoreCase("ownerwise"))
 					requierment.setPositionOwner(req.get_id());
 				if(null!=filterType && filterType.equalsIgnoreCase("projectwise"))
 					requierment.setProjectName(req.get_id());
-			
+
 				reqList.add(requierment);
 			}
 		}
@@ -199,16 +200,16 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL {
 		List<RequirementDetailsJO> requiermentDetails=mongoTemplate.find(query, RequirementDetailsJO.class);
 		for(RequirementDetailsJO requirements: requiermentDetails){
 			if(null!=requirements.getOpenDate()){
-		 	requirements.setOpenDate(convertUtilToSqlDate(requirements.getOpenDate()));
+				requirements.setOpenDate(convertUtilToSqlDate(requirements.getOpenDate()));
 			}
-			
+
 			if(null!=requirements.getStartDate()){
-			 	requirements.setStartDate(convertUtilToSqlDate(requirements.getStartDate()));
-				}
-			
+				requirements.setStartDate(convertUtilToSqlDate(requirements.getStartDate()));
+			}
+
 			requiermentDetailList.add(requirements);
 		}
-	
+
 		return requiermentDetails;
 	}
 
@@ -281,95 +282,130 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL {
 		RequirementDetailsJO requirementJO = mongoTemplate.findOne(query, RequirementDetailsJO.class);
 		if(null!=requirementJO.getOpenDate()){
 			requirementJO.setOpenDate(convertUtilToSqlDate(requirementJO.getOpenDate()));
-			}
-			
-			if(null!=requirementJO.getStartDate()){
-				requirementJO.setStartDate(convertUtilToSqlDate(requirementJO.getStartDate()));
-				}
-		
+		}
+
+		if(null!=requirementJO.getStartDate()){
+			requirementJO.setStartDate(convertUtilToSqlDate(requirementJO.getStartDate()));
+		}
+
 		return requirementJO;
 	}
-	
-	 @Override
-	  public boolean createUser(LoginDetailsJO loginDetails) {
-		    Query query = new Query();
-			query.addCriteria(Criteria.where("employeeId").in(loginDetails.getEmployeeId()).andOperator(Criteria.where ("emailId").in(loginDetails.getEmailId())));
-			LoginDetailsJO val=mongoTemplate.findOne(query, LoginDetailsJO.class);
-			if(null!=val){
-				return false;
-			}else{
-				 loginDetails.set_id(generateSequence());
-				 mongoTemplate.save(loginDetails);
-				 return true;
-			}
-	 }
 
-	 
-	 /**
-		 * The method gives unique number .
-		 *
-		 * @return the int
-		 */
-		public static int generateSequence() {
-			String dateFormat = new SimpleDateFormat("yyyyMM-ddHHmm-ssSSS", Locale.ENGLISH).format(new Date());
-			String[] dateSplit = dateFormat.split("-");
-			return Integer.parseInt(dateSplit[0]) + Integer.parseInt(dateSplit[1]) + Integer.parseInt(dateSplit[2]);
+	@Override
+	public boolean createUser(LoginDetailsJO loginDetails) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("employeeId").in(loginDetails.getEmployeeId()).andOperator(Criteria.where ("emailId").in(loginDetails.getEmailId())));
+		LoginDetailsJO val=mongoTemplate.findOne(query, LoginDetailsJO.class);
+		if(null!=val){
+			return false;
+		}else{
+			loginDetails.set_id(generateSequence());
+			mongoTemplate.save(loginDetails);
+			return true;
 		}
-		
-		
-		@Override
-		public LoginDetailsJO getUserById(LoginDetailsJO loginDetails) {
-			System.out.println("inside getUserById");
-			Query query = new Query();
-			query.addCriteria(Criteria.where("employeeId").in(loginDetails.getEmployeeId()).andOperator(Criteria.where ("password").in(loginDetails.getPassword())));
-			//query.addCriteria((Criteria.where("employeeId").in(loginDetails.getEmployeeId()).orOperator(Criteria.where("userName")).in(loginDetails.getUserName())).andOperator(Criteria.where ("password").in(loginDetails.getPassword())));
-			LoginDetailsJO val = mongoTemplate.findOne(query, LoginDetailsJO.class);
-			return val;
+	}
+
+
+	/**
+	 * The method gives unique number .
+	 *
+	 * @return the int
+	 */
+	public static int generateSequence() {
+		String dateFormat = new SimpleDateFormat("yyyyMM-ddHHmm-ssSSS", Locale.ENGLISH).format(new Date());
+		String[] dateSplit = dateFormat.split("-");
+		return Integer.parseInt(dateSplit[0]) + Integer.parseInt(dateSplit[1]) + Integer.parseInt(dateSplit[2]);
+	}
+
+
+	@Override
+	public LoginDetailsJO getUserById(LoginDetailsJO loginDetails) {
+		System.out.println("inside getUserById");
+		Query query = new Query();
+		query.addCriteria(Criteria.where("employeeId").in(loginDetails.getEmployeeId()).andOperator(Criteria.where ("password").in(loginDetails.getPassword())));
+		//query.addCriteria((Criteria.where("employeeId").in(loginDetails.getEmployeeId()).orOperator(Criteria.where("userName")).in(loginDetails.getUserName())).andOperator(Criteria.where ("password").in(loginDetails.getPassword())));
+		LoginDetailsJO val = mongoTemplate.findOne(query, LoginDetailsJO.class);
+		return val;
+	}
+
+	@Override
+	public List<TotalRequirements> findReqByDates(java.sql.Date startDate, java.sql.Date endDate, String status,String dashboardType) {
+		System.out.println("inside findReqByDates(String startDate,String endDate) method");
+		GroupOperation group =null;
+		if(null!=dashboardType && dashboardType.equalsIgnoreCase("mainSkill")){
+			group =  Aggregation.group("mainSkill").count().as("total");
+		}else if(null!=dashboardType && dashboardType.equalsIgnoreCase("domain")){
+			group =  Aggregation.group("domain").count().as("total");
+		}else if(null!=dashboardType && dashboardType.equalsIgnoreCase("projectName")){
+			group =  Aggregation.group("projectName").count().as("total");
+		}else if(null!=dashboardType && dashboardType.equalsIgnoreCase("positionOwner")){
+			group =  Aggregation.group("positionOwner").count().as("total");
 		}
-		
-		@Override
-		public List<TotalRequirements> findReqByDates(java.sql.Date startDate, java.sql.Date endDate, String status,String dashboardType) {
-			System.out.println("inside findReqByDates(String startDate,String endDate) method");
-			GroupOperation group =null;
-			if(null!=dashboardType && dashboardType.equalsIgnoreCase("mainSkill")){
-				group =  Aggregation.group("mainSkill").count().as("total");
-			}else if(null!=dashboardType && dashboardType.equalsIgnoreCase("domain")){
-				group =  Aggregation.group("domain").count().as("total");
-			}else if(null!=dashboardType && dashboardType.equalsIgnoreCase("projectName")){
-				group =  Aggregation.group("projectName").count().as("total");
-			}else if(null!=dashboardType && dashboardType.equalsIgnoreCase("positionOwner")){
-				group =  Aggregation.group("positionOwner").count().as("total");
+
+		Aggregation.match(Criteria.where ("openDate").in(startDate));
+		Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(Criteria.where("openDate").gte(startDate).lte(endDate) 
+				.andOperator(Criteria.where("status").in(status))),
+				group);
+		AggregationResults<RequirementGrpJO> requiermentList =mongoTemplate.aggregate(aggregation, RequirementGrpJO.class, RequirementGrpJO.class);
+
+		System.out.println("resourceList------->"+ requiermentList.getMappedResults().size());
+		List<RequirementGrpJO> requierments= requiermentList.getMappedResults();
+
+		List<TotalRequirements> reqList= new ArrayList<TotalRequirements>();
+
+		if(null!=requierments && !requierments.isEmpty()){
+			for(RequirementGrpJO req:requierments){
+				TotalRequirements requierment= new TotalRequirements();
+				requierment.setCount(req.getTotal());
+				if(null!=dashboardType && dashboardType.equalsIgnoreCase("mainSkill"))
+					requierment.setMainSkill(req.get_id());
+				else if(null!=dashboardType && dashboardType.equalsIgnoreCase("domain"))
+					requierment.setDomain(req.get_id());
+				else if(null!=dashboardType && dashboardType.equalsIgnoreCase("positionOwner"))
+					requierment.setPositionOwner(req.get_id());
+				else if(null!=dashboardType && dashboardType.equalsIgnoreCase("projectName")) 
+					requierment.setProjectName(req.get_id());
+
+				reqList.add(requierment);
 			}
-			
+		}
+		return reqList;
+	}
+
+	@Override
+	public List<TotalRequirements> findMonthlyGroupedReq() {
+		GroupOperation group =null;
+		List<TotalRequirements> reqList= new ArrayList<TotalRequirements>();
+		DateTimeFormatter monthYearFormatter = DateTimeFormatter.ofPattern("MMM yyyy",Locale.ENGLISH);
+		for(int i=0 ;i<6;i++){
+			YearMonth currMonth    = YearMonth.now();
+			String monthYear=currMonth.minusMonths(i).format(monthYearFormatter);
+			YearMonth month = YearMonth.from(currMonth.minusMonths(i));
+			LocalDate startDate = month.atDay(1);
+			LocalDate endDate   = month.atEndOfMonth();
+			group =  Aggregation.group("mainSkill").count().as("total");
 			Aggregation.match(Criteria.where ("openDate").in(startDate));
 			Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(Criteria.where("openDate").gte(startDate).lte(endDate) 
-					      .andOperator(Criteria.where("status").in(status))),
-					group);
+					.andOperator(Criteria.where("status").in("Open"))
+					),group);
 			AggregationResults<RequirementGrpJO> requiermentList =mongoTemplate.aggregate(aggregation, RequirementGrpJO.class, RequirementGrpJO.class);
-
-			System.out.println("resourceList------->"+ requiermentList.getMappedResults().size());
 			List<RequirementGrpJO> requierments= requiermentList.getMappedResults();
-
-			List<TotalRequirements> reqList= new ArrayList<TotalRequirements>();
-
 			if(null!=requierments && !requierments.isEmpty()){
-				for(RequirementGrpJO req:requierments){
-					TotalRequirements requierment= new TotalRequirements();
-					requierment.setCount(req.getTotal());
-					if(null!=dashboardType && dashboardType.equalsIgnoreCase("mainSkill"))
-					 requierment.setMainSkill(req.get_id());
-					else if(null!=dashboardType && dashboardType.equalsIgnoreCase("domain"))
-						 requierment.setDomain(req.get_id());
-					else if(null!=dashboardType && dashboardType.equalsIgnoreCase("positionOwner"))
-						requierment.setPositionOwner(req.get_id());
-					else if(null!=dashboardType && dashboardType.equalsIgnoreCase("projectName")) 
-						requierment.setProjectName(req.get_id());
-
-					reqList.add(requierment);
-				}
+				TotalRequirements requierment= new TotalRequirements();
+				requierment.setCount(Integer.toString(requierments.size()));
+				requierment.setMonthYear(monthYear);
+				reqList.add(requierment);
+			}else{
+				TotalRequirements requierment= new TotalRequirements();
+				requierment.setCount("0");
+				requierment.setMonthYear(monthYear);
+				reqList.add(requierment);
 			}
-			return reqList;
 		}
+		return reqList;
+	}
 
-		
-}
+}		
+
+
+

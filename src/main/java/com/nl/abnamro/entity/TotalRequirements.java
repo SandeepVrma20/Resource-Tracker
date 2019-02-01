@@ -16,10 +16,19 @@ public class TotalRequirements {
   private String projectName;
   private String response;
   private String monthWise;
+  private String monthYear;
   
 
   
-  public String getMonthWise() {
+  public String getMonthYear() {
+	return monthYear;
+}
+
+public void setMonthYear(String monthYear) {
+	this.monthYear = monthYear;
+}
+
+public String getMonthWise() {
 	return monthWise;
 }
 

@@ -39,10 +39,10 @@ import com.nl.abnamro.entity.ResourceDetailsJO;
 import com.nl.abnamro.entity.TotalRequirements;
 
 /**
- * @author C33129
+ * @author C33129 
  *
  */
-//@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping(value = "/api")
 public class ResourceTrackerController {
@@ -246,9 +246,9 @@ public class ResourceTrackerController {
 	}
 	
 	@RequestMapping(value="/requirements/monthwise",method=RequestMethod.GET,headers="Accept=application/json")
-	public List<TotalRequirements>  getGrpRequirementByMonth() throws IOException{
-		System.out.println("inside get getGrpRequirementByOwner");
-		List<TotalRequirements> requierments=resoucerTrackerDal.findAllGroupedReq("monthwise");
+	public List<TotalRequirements> getGrpRequirementByMonth() throws IOException{
+		System.out.println("inside get getGrpRequirementByMonth");
+		List<TotalRequirements> requierments=resoucerTrackerDal.findMonthlyGroupedReq();
 		return requierments;
 	}
 	

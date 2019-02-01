@@ -46,6 +46,9 @@ public interface ResourceTrackerDAL {
 	public List<String> getSkillCategory();
 	
 	public List<TotalRequirements> findReqByDates(Date startDate,Date endDate,String status,String dashboradType);
+	
+	public List<TotalRequirements> findMonthlyGroupedReq();
+
 
 
 
