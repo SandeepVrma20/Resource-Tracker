@@ -44,10 +44,14 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL {
 	private MongoTemplate mongoTemplate;
 
 	public static final String OPEN_DATE_FORMAT="EEE MMM d HH:mm:ss zzz yyyy";
+	private static final String OPEN="Open";
+	private static final String CLOSED="Closed";
+	private static final String OFFSHORE="Offshore";
+	private static final String ONSITE="Onsite";
+	
 
 	@Override
 	public ResourceDetails findOne(ResourceDetails resource) {
-		System.out.println("inside find one");
 		BasicDBObject docs = new BasicDBObject();
 		docs.put("_id", resource.get_id());
 		Query query = new Query();
@@ -58,18 +62,14 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL {
 
 	@Override
 	public List<ResourceDetails> findAll() {
-		System.out.println("inside find All");
 		List<ResourceDetails> resourceList = mongoTemplate.findAll(ResourceDetails.class);
-		System.out.println("resourceList------->" + resourceList.size());
 		return resourceList;
 	}
 
 	@Override
 	public List<String> getSkillCategory() {
-		System.out.println("inside get All Skill");
 		List<SkillCategoryJO> skillCategoryLists = mongoTemplate.findAll(SkillCategoryJO.class);
 		List<String> allSkills =new ArrayList<>();
-		System.out.println("resourceList------->" + skillCategoryLists.size());
 		for(SkillCategoryJO skills: skillCategoryLists){
 			allSkills.add(skills.getSkillCategory());
 		}
@@ -107,9 +107,7 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL {
 
 	@Override
 	public List<RequirementDetailsJO> findAllRequierments() {
-		System.out.println("inside findAllRequierments method");
 		List<RequirementDetailsJO> requiermentList=mongoTemplate.findAll(RequirementDetailsJO.class);
-		System.out.println("resourceList------->"+ requiermentList.size());
 		List<RequirementDetailsJO> requiermentDetailList = new ArrayList<>();
 
 		for(RequirementDetailsJO requirements: requiermentList){
@@ -146,7 +144,6 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL {
 
 	@Override
 	public List<TotalRequirements> findAllGroupedReq(String filterType) {
-		System.out.println("inside findAllRequierments method");
 		GroupOperation group =null;
 		if(null!=filterType && filterType.equalsIgnoreCase("skillwise")){
 			group =  Aggregation.group("mainSkill").count().as("total");
@@ -161,7 +158,6 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL {
 		Aggregation aggregation  = Aggregation.newAggregation(group);
 		AggregationResults<RequirementGrpJO> requiermentList =mongoTemplate.aggregate(aggregation, 
 				RequirementGrpJO.class, RequirementGrpJO.class);
-		System.out.println("resourceList------->"+ requiermentList.getMappedResults().size());
 		List<RequirementGrpJO> requierments= requiermentList.getMappedResults();
 		List<TotalRequirements> reqList= new ArrayList<TotalRequirements>();
 		if(null!=requierments && !requierments.isEmpty()){
@@ -185,7 +181,6 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL {
 
 	@Override
 	public List<RequirementDetailsJO> findReqByFilterType(String filterType,String filterValue) {
-		System.out.println("inside find one");
 		List<RequirementDetailsJO> requiermentDetailList = new ArrayList<>();
 		Query query = new Query();
 		if(null!=filterType && null!=filterValue && filterType.equalsIgnoreCase("mainSkill")){
@@ -263,7 +258,6 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL {
 		update.set("closedBy", requirementDetails.getClosedBy());
 		update.set("remarks", requirementDetails.getRemarks());
 		UpdateResult val=mongoTemplate.updateFirst(query, update, RequirementDetailsJO.class);
-		System.out.println("val-->" +val);
 		if(null!=val && val.getMatchedCount()==val.getModifiedCount()){
 			return true;
 		}else{
@@ -274,7 +268,6 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL {
 
 	@Override
 	public RequirementDetailsJO findRequirementById(Long reqId) {
-		System.out.println("inside find one");
 		BasicDBObject docs = new BasicDBObject();
 		docs.put("reqId", reqId);
 		Query query = new Query();
@@ -320,7 +313,6 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL {
 
 	@Override
 	public LoginDetailsJO getUserById(LoginDetailsJO loginDetails) {
-		System.out.println("inside getUserById");
 		Query query = new Query();
 		query.addCriteria(Criteria.where("employeeId").in(loginDetails.getEmployeeId()).andOperator(Criteria.where ("password").in(loginDetails.getPassword())));
 		//query.addCriteria((Criteria.where("employeeId").in(loginDetails.getEmployeeId()).orOperator(Criteria.where("userName")).in(loginDetails.getUserName())).andOperator(Criteria.where ("password").in(loginDetails.getPassword())));
@@ -330,7 +322,6 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL {
 
 	@Override
 	public List<TotalRequirements> findReqByDates(java.sql.Date startDate, java.sql.Date endDate, String status,String dashboardType) {
-		System.out.println("inside findReqByDates(String startDate,String endDate) method");
 		GroupOperation group =null;
 		if(null!=dashboardType && dashboardType.equalsIgnoreCase("mainSkill")){
 			group =  Aggregation.group("mainSkill").count().as("total");
@@ -347,10 +338,7 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL {
 				.andOperator(Criteria.where("status").in(status))),
 				group);
 		AggregationResults<RequirementGrpJO> requiermentList =mongoTemplate.aggregate(aggregation, RequirementGrpJO.class, RequirementGrpJO.class);
-
-		System.out.println("resourceList------->"+ requiermentList.getMappedResults().size());
 		List<RequirementGrpJO> requierments= requiermentList.getMappedResults();
-
 		List<TotalRequirements> reqList= new ArrayList<TotalRequirements>();
 
 		if(null!=requierments && !requierments.isEmpty()){
@@ -373,6 +361,65 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL {
 	}
 
 	@Override
+	public List<TotalRequirements> findMonthlyGroupedReq() {
+		List<TotalRequirements> reqList= new ArrayList<TotalRequirements>();
+		DateTimeFormatter monthYearFormatter = DateTimeFormatter.ofPattern("MMM yyyy",Locale.ENGLISH);
+		for(int i=0 ;i<6;i++){
+			YearMonth currMonth    = YearMonth.now();
+			String monthYear=currMonth.minusMonths(i).format(monthYearFormatter);
+			YearMonth month = YearMonth.from(currMonth.minusMonths(i));
+			LocalDate startDate = month.atDay(1);
+			LocalDate endDate   = month.atEndOfMonth();
+			Query query = new Query();
+			query.addCriteria(Criteria.where("openDate").gte(startDate).lte(endDate));
+			List<RequirementDetailsJO> requiermentDetails=mongoTemplate.find(query, RequirementDetailsJO.class);
+			
+			if(null!=requiermentDetails && !requiermentDetails.isEmpty()){
+				int openOnReqCount=0;
+				int openOffReqCount=0;
+				int closeOffReqCount=0;
+				int closeOnReqCount=0;
+				int totalCount=0;
+				TotalRequirements requierment= new TotalRequirements();;
+				for(RequirementDetailsJO req:requiermentDetails){
+					if(req.getStatus().equalsIgnoreCase(OPEN) && req.getSite().equalsIgnoreCase(OFFSHORE)){
+						openOffReqCount ++;
+						totalCount++;
+					}else if (req.getStatus().equalsIgnoreCase(OPEN) && req.getSite().equalsIgnoreCase(ONSITE)){
+						openOnReqCount++;
+						totalCount++;
+					}else if (req.getStatus().equalsIgnoreCase(CLOSED) && req.getSite().equalsIgnoreCase(OFFSHORE)){
+						closeOffReqCount++;
+						totalCount++;
+					}else if (req.getStatus().equalsIgnoreCase(CLOSED) && req.getSite().equalsIgnoreCase(ONSITE)){
+						closeOnReqCount++;
+						totalCount++;
+					}
+				}
+				requierment.setMonthYear(monthYear);
+				requierment.setCloseOffReqCount(closeOffReqCount);
+				requierment.setCloseOnReqCount(closeOnReqCount);
+				requierment.setOpenOnReqCount(openOnReqCount);
+				requierment.setOpenOffReqCount(openOffReqCount);
+				requierment.setCount(Integer.toString(totalCount));
+				reqList.add(requierment);
+			}else{
+				TotalRequirements requierment= new TotalRequirements();
+				requierment.setCount("0");
+				requierment.setMonthYear(monthYear);
+				requierment.setCloseOffReqCount(0);
+				requierment.setCloseOnReqCount(0);
+				requierment.setOpenOnReqCount(0);
+				requierment.setOpenOffReqCount(0);
+				reqList.add(requierment);
+			}
+		}
+		return reqList;
+	}
+
+	
+	
+	/*@Override
 	public List<TotalRequirements> findMonthlyGroupedReq() {
 		GroupOperation group =null;
 		List<TotalRequirements> reqList= new ArrayList<TotalRequirements>();
@@ -403,8 +450,9 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL {
 			}
 		}
 		return reqList;
-	}
-
+	}*/
+	
+	
 }		
 
 

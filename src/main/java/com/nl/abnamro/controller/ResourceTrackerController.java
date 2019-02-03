@@ -131,17 +131,8 @@ public class ResourceTrackerController {
 		Map<String,Object> responseMsg=new HashMap<String,Object>();
 		ResourceTrackerControllerImpl impl= new ResourceTrackerControllerImpl();
 		RequirementDetails requiermentDetails =impl.getRequirementDetail(requiermentDetailsJO);
-		
-		System.out.println("inside requiermentDetails");
-		System.out.println(requiermentDetails.getOpenDate());
-		
-		//String openDate=requiermentDetailsJO.getOpenDate(); //Sun Dec 02 00:00:00 CET 2018
 		DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("EEE MMM d HH:mm:ss zzz yyyy", Locale.ENGLISH);
-		//LocalDate loDate1 = LocalDate.parse(openDate, formatter1);
-	//	System.out.println("newDate---" +loDate1); // 2010-01-02
-		
 		boolean isSaved=resoucerTrackerDal.saveRequierments(requiermentDetails);
-		System.out.println("returnValue--->" +isSaved);
 		responseMsg.put("reqId", requiermentDetails.getReqId());
 		responseMsg.put("flag", isSaved);
 		if(isSaved){
@@ -158,10 +149,7 @@ public class ResourceTrackerController {
 	public Map<String,Object> updatRequierments(@RequestBody RequirementDetailsJO requiermentDetails,
 			HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException{
 		Map<String,Object> responseMsg=new HashMap<String,Object>();
-		System.out.println("inside requiermentDetails");
-		System.out.println(requiermentDetails.getStartDate());
 		boolean isSaved=resoucerTrackerDal.updateRequierments(requiermentDetails);
-		System.out.println("returnValue--->" +isSaved);
 		responseMsg.put("reqId", requiermentDetails.getReqId());
 		responseMsg.put("flag", isSaved);
 		if(isSaved){
@@ -179,9 +167,7 @@ public class ResourceTrackerController {
 	public Map<String,Object> createUsers(@RequestBody LoginDetailsJO loginDetails,
 			HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException{
 		Map<String,Object> responseMsg=new HashMap<String,Object>();
-		System.out.println("inside user ");
 		boolean isSaved=resoucerTrackerDal.createUser(loginDetails);
-		System.out.println("returnValue--->" +isSaved);
 		responseMsg.put("employeeId", loginDetails.getEmployeeId());
 		responseMsg.put("flag", isSaved);
 		if(isSaved){
@@ -197,14 +183,14 @@ public class ResourceTrackerController {
 	@RequestMapping(value="/user/employeeId",method=RequestMethod.POST,headers="Accept=application/json")
 	public Map<String,Object> getUserById(@RequestBody LoginDetailsJO loginDetails,
 			HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException{
-		System.out.println("inside get getUserById");
-		System.out.println("loginDetails.getEmployeeId()" + loginDetails.getEmployeeId());
 		Map<String,Object> responseMsg=new HashMap<String,Object>();
 		responseMsg.put("employeeId", loginDetails.getEmployeeId());
 		LoginDetailsJO loginDetail=resoucerTrackerDal.getUserById(loginDetails);
 		if(null!=loginDetail){
 			responseMsg.put("response", "Successfully Login !!!");
 			responseMsg.put("isSuccess", "true");
+			responseMsg.put("employeeId", loginDetail.getEmployeeId());
+			responseMsg.put("firstName", loginDetail.getFirstName());
 		}else{
 			responseMsg.put("response", "User Id and Password are incorrect");
 			responseMsg.put("isSuccess", "false");
@@ -216,12 +202,10 @@ public class ResourceTrackerController {
 	
 	@RequestMapping(value="/requirements/autoFilled",method=RequestMethod.GET,headers="Accept=application/json")
 	public Map<String,List<String>>  getAllPreFilledData() throws IOException{
-		System.out.println("inside get get autoFilled");
 		Map<String,List<String>> responseMsg=new HashMap<String,List<String>>();
 		List<String> skillCategorys=resoucerTrackerDal.getSkillCategory();
 		if(null!=skillCategorys && !skillCategorys.isEmpty()){
 			responseMsg.put("skillCategory", skillCategorys);
-			System.out.println();
 		}
 		return responseMsg;
 	}
@@ -230,8 +214,6 @@ public class ResourceTrackerController {
 	@RequestMapping(value="/requirements/customDates",method=RequestMethod.PUT,headers="Accept=application/json")
 	public Map<String,List<TotalRequirements>> getReqByDates(@RequestBody RequirementSearchJO requirementSearch,
 			HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException{
-		System.out.println("inside getReqByDates");
-		System.out.println(requirementSearch.getDashboardType() + requirementSearch.getStatus() + requirementSearch.getClosedDate() + requirementSearch.getStartDate());
 		Map<String,List<TotalRequirements>> responseMsg=new HashMap<String,List<TotalRequirements>>();
 		List<TotalRequirements> totalReq=resoucerTrackerDal.findReqByDates(requirementSearch.getStartDate(), requirementSearch.getClosedDate() ,
 				requirementSearch.getStatus(),requirementSearch.getDashboardType());
@@ -247,7 +229,6 @@ public class ResourceTrackerController {
 	
 	@RequestMapping(value="/requirements/monthwise",method=RequestMethod.GET,headers="Accept=application/json")
 	public List<TotalRequirements> getGrpRequirementByMonth() throws IOException{
-		System.out.println("inside get getGrpRequirementByMonth");
 		List<TotalRequirements> requierments=resoucerTrackerDal.findMonthlyGroupedReq();
 		return requierments;
 	}

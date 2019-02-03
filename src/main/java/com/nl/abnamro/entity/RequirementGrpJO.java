@@ -33,10 +33,28 @@ public class RequirementGrpJO {
   private String projectName;
   private String expBand;
   private String total;
+  private String site;
+  private String status;
 
 
 
-  public String get_id() {
+  public String getSite() {
+	return site;
+}
+
+public void setSite(String site) {
+	this.site = site;
+}
+
+public String getStatus() {
+	return status;
+}
+
+public void setStatus(String status) {
+	this.status = status;
+}
+
+public String get_id() {
     return _id;
   }
 
