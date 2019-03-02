@@ -21,8 +21,26 @@ public class TotalRequirements {
 	private int closeOffReqCount;
 	private int openOnReqCount;
 	private int closeOnReqCount;
+	private int onshoreReqCount;
+	private int offshoreReqCount;
 
 
+
+	public int getOnshoreReqCount() {
+		return onshoreReqCount;
+	}
+
+	public void setOnshoreReqCount(int onshoreReqCount) {
+		this.onshoreReqCount = onshoreReqCount;
+	}
+
+	public int getOffshoreReqCount() {
+		return offshoreReqCount;
+	}
+
+	public void setOffshoreReqCount(int offshoreReqCount) {
+		this.offshoreReqCount = offshoreReqCount;
+	}
 
 	public int getOpenOffReqCount() {
 		return openOffReqCount;

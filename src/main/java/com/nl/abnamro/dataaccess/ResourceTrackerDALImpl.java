@@ -10,8 +10,10 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -48,7 +50,7 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL {
 	private static final String CLOSED="Closed";
 	private static final String OFFSHORE="Offshore";
 	private static final String ONSITE="Onsite";
-	
+
 
 	@Override
 	public ResourceDetails findOne(ResourceDetails resource) {
@@ -146,7 +148,7 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL {
 	public List<TotalRequirements> findAllGroupedReq(String filterType) {
 		GroupOperation group =null;
 		if(null!=filterType && filterType.equalsIgnoreCase("skillwise")){
-			group =  Aggregation.group("mainSkill").count().as("total");
+			group =  Aggregation.group("skillCategory").count().as("total");
 		}else if(null!=filterType && filterType.equalsIgnoreCase("domainwise")){
 			group =  Aggregation.group("domain").count().as("total");
 		}else if(null!=filterType && filterType.equalsIgnoreCase("projectwise")){
@@ -184,7 +186,7 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL {
 		List<RequirementDetailsJO> requiermentDetailList = new ArrayList<>();
 		Query query = new Query();
 		if(null!=filterType && null!=filterValue && filterType.equalsIgnoreCase("mainSkill")){
-			query.addCriteria(Criteria.where("mainSkill").in(filterValue));
+			query.addCriteria(Criteria.where("skillCategory").in(filterValue));
 		}else if(null!=filterType && null!=filterValue && filterType.equalsIgnoreCase("domain")){
 			query.addCriteria(Criteria.where("domain").in(filterValue));
 		}else if(null!=filterType && null!=filterValue && filterType.equalsIgnoreCase("projectName")){
@@ -314,7 +316,9 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL {
 	@Override
 	public LoginDetailsJO getUserById(LoginDetailsJO loginDetails) {
 		Query query = new Query();
-		query.addCriteria(Criteria.where("employeeId").in(loginDetails.getEmployeeId()).andOperator(Criteria.where ("password").in(loginDetails.getPassword())));
+		query.addCriteria(Criteria.where("employeeId").in(loginDetails.getEmployeeId())
+				.andOperator(Criteria.where ("password").in(loginDetails.getPassword()))
+				);
 		//query.addCriteria((Criteria.where("employeeId").in(loginDetails.getEmployeeId()).orOperator(Criteria.where("userName")).in(loginDetails.getUserName())).andOperator(Criteria.where ("password").in(loginDetails.getPassword())));
 		LoginDetailsJO val = mongoTemplate.findOne(query, LoginDetailsJO.class);
 		return val;
@@ -324,7 +328,7 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL {
 	public List<TotalRequirements> findReqByDates(java.sql.Date startDate, java.sql.Date endDate, String status,String dashboardType) {
 		GroupOperation group =null;
 		if(null!=dashboardType && dashboardType.equalsIgnoreCase("mainSkill")){
-			group =  Aggregation.group("mainSkill").count().as("total");
+			group =  Aggregation.group("skillCategory").count().as("total");
 		}else if(null!=dashboardType && dashboardType.equalsIgnoreCase("domain")){
 			group =  Aggregation.group("domain").count().as("total");
 		}else if(null!=dashboardType && dashboardType.equalsIgnoreCase("projectName")){
@@ -364,7 +368,7 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL {
 	public List<TotalRequirements> findMonthlyGroupedReq() {
 		List<TotalRequirements> reqList= new ArrayList<TotalRequirements>();
 		DateTimeFormatter monthYearFormatter = DateTimeFormatter.ofPattern("MMM yyyy",Locale.ENGLISH);
-		for(int i=0 ;i<6;i++){
+		for(int i=0 ;i<9;i++){
 			YearMonth currMonth    = YearMonth.now();
 			String monthYear=currMonth.minusMonths(i).format(monthYearFormatter);
 			YearMonth month = YearMonth.from(currMonth.minusMonths(i));
@@ -373,27 +377,28 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL {
 			Query query = new Query();
 			query.addCriteria(Criteria.where("openDate").gte(startDate).lte(endDate));
 			List<RequirementDetailsJO> requiermentDetails=mongoTemplate.find(query, RequirementDetailsJO.class);
-			
+
 			if(null!=requiermentDetails && !requiermentDetails.isEmpty()){
 				int openOnReqCount=0;
 				int openOffReqCount=0;
 				int closeOffReqCount=0;
 				int closeOnReqCount=0;
-				int totalCount=0;
+				int totalOffshoreCount=0;
+				int totalOnshoreCount=0;
 				TotalRequirements requierment= new TotalRequirements();;
 				for(RequirementDetailsJO req:requiermentDetails){
-					if(req.getStatus().equalsIgnoreCase(OPEN) && req.getSite().equalsIgnoreCase(OFFSHORE)){
+					if(req.getStatus().trim().equalsIgnoreCase(OPEN) && req.getSite().trim().equalsIgnoreCase(OFFSHORE)){
 						openOffReqCount ++;
-						totalCount++;
-					}else if (req.getStatus().equalsIgnoreCase(OPEN) && req.getSite().equalsIgnoreCase(ONSITE)){
+						totalOffshoreCount++;
+					}else if (req.getStatus().trim().equalsIgnoreCase(OPEN) && req.getSite().trim().equalsIgnoreCase(ONSITE)){
 						openOnReqCount++;
-						totalCount++;
-					}else if (req.getStatus().equalsIgnoreCase(CLOSED) && req.getSite().equalsIgnoreCase(OFFSHORE)){
+						totalOnshoreCount++;
+					}else if (req.getStatus().trim().equalsIgnoreCase(CLOSED) && req.getSite().trim().equalsIgnoreCase(OFFSHORE)){
 						closeOffReqCount++;
-						totalCount++;
-					}else if (req.getStatus().equalsIgnoreCase(CLOSED) && req.getSite().equalsIgnoreCase(ONSITE)){
+						totalOffshoreCount++;
+					}else if (req.getStatus().trim().equalsIgnoreCase(CLOSED) && req.getSite().trim().equalsIgnoreCase(ONSITE)){
 						closeOnReqCount++;
-						totalCount++;
+						totalOnshoreCount++;
 					}
 				}
 				requierment.setMonthYear(monthYear);
@@ -401,7 +406,8 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL {
 				requierment.setCloseOnReqCount(closeOnReqCount);
 				requierment.setOpenOnReqCount(openOnReqCount);
 				requierment.setOpenOffReqCount(openOffReqCount);
-				requierment.setCount(Integer.toString(totalCount));
+				requierment.setOffshoreReqCount(totalOffshoreCount);
+				requierment.setOnshoreReqCount(totalOnshoreCount);
 				reqList.add(requierment);
 			}else{
 				TotalRequirements requierment= new TotalRequirements();
@@ -411,48 +417,40 @@ public class ResourceTrackerDALImpl implements ResourceTrackerDAL {
 				requierment.setCloseOnReqCount(0);
 				requierment.setOpenOnReqCount(0);
 				requierment.setOpenOffReqCount(0);
+				requierment.setOffshoreReqCount(0);
+				requierment.setOnshoreReqCount(0);
 				reqList.add(requierment);
 			}
 		}
 		return reqList;
 	}
 
-	
-	
-	/*@Override
-	public List<TotalRequirements> findMonthlyGroupedReq() {
-		GroupOperation group =null;
-		List<TotalRequirements> reqList= new ArrayList<TotalRequirements>();
-		DateTimeFormatter monthYearFormatter = DateTimeFormatter.ofPattern("MMM yyyy",Locale.ENGLISH);
-		for(int i=0 ;i<6;i++){
-			YearMonth currMonth    = YearMonth.now();
-			String monthYear=currMonth.minusMonths(i).format(monthYearFormatter);
-			YearMonth month = YearMonth.from(currMonth.minusMonths(i));
-			LocalDate startDate = month.atDay(1);
-			LocalDate endDate   = month.atEndOfMonth();
-			group =  Aggregation.group("mainSkill").count().as("total");
-			Aggregation.match(Criteria.where ("openDate").in(startDate));
-			Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(Criteria.where("openDate").gte(startDate).lte(endDate) 
-					.andOperator(Criteria.where("status").in("Open"))
-					),group);
-			AggregationResults<RequirementGrpJO> requiermentList =mongoTemplate.aggregate(aggregation, RequirementGrpJO.class, RequirementGrpJO.class);
-			List<RequirementGrpJO> requierments= requiermentList.getMappedResults();
-			if(null!=requierments && !requierments.isEmpty()){
-				TotalRequirements requierment= new TotalRequirements();
-				requierment.setCount(Integer.toString(requierments.size()));
-				requierment.setMonthYear(monthYear);
-				reqList.add(requierment);
+	@Override
+	public Map<String,Object> forgetPassword(LoginDetailsJO loginDetails) {
+		Map<String,Object> responseMsg=new HashMap<String,Object>();
+		Query query = new Query();
+		query.addCriteria(Criteria.where("employeeId").in(loginDetails.getEmployeeId()));
+		LoginDetailsJO val=mongoTemplate.findOne(query, LoginDetailsJO.class);
+		if(null!=val){
+			if(val.getSecretQuestion().equalsIgnoreCase(loginDetails.getSecretQuestion()) 
+					&& val.getAnswer().equals(loginDetails.getAnswer())){
+				Update update = new Update();
+				update.set("password", loginDetails.getPassword());
+				mongoTemplate.updateFirst(query, update, LoginDetailsJO.class);
+				responseMsg.put("flag",true);
+				responseMsg.put("response","Password updated successfully for employee id " + loginDetails.getEmployeeId());
+				return responseMsg;
 			}else{
-				TotalRequirements requierment= new TotalRequirements();
-				requierment.setCount("0");
-				requierment.setMonthYear(monthYear);
-				reqList.add(requierment);
+				responseMsg.put("flag",false);
+				responseMsg.put("response","Kindly provide the correct secret question and answer for employee id "+ loginDetails.getEmployeeId());
+				return responseMsg;
 			}
+		}else{
+			responseMsg.put("flag",false);
+			responseMsg.put("response","Employee Id does not exists. Please sign up !!! ");
+			return responseMsg;
 		}
-		return reqList;
-	}*/
-	
-	
+	}
 }		
 
 

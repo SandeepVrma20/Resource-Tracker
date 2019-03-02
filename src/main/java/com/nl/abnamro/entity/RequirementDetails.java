@@ -20,24 +20,30 @@ public class RequirementDetails {
   @Id
   private Object _id;
 
+  private String eucRefId;
   private long rgsId;
   private long reqId;
   private String account;
   private String positionOwner;
   private Date openDate;
+  private long noOfDaysOpen;
+  private String site;
+  private String location;
+  
   private String position;
   private String skillCategory;
   private String mainSkill;
   private String additionalSkill;
   private String domain;
   private String projectName;
+  private String category;
   private String expBand;
-  private String eucRefId;
-  private String site;
-  private String location;
   private Date startDate;
   private String reqType;
   private String reqClass;
+  private String criticality;
+  private Date criticalityDate;
+  private String customerEval;
   private String contractor;
   private String trainee;
   private String revenueWithinQtr;
@@ -57,6 +63,46 @@ public class RequirementDetails {
 
 
 
+
+public long getNoOfDaysOpen() {
+	return noOfDaysOpen;
+}
+
+public void setNoOfDaysOpen(long noOfDaysOpen) {
+	this.noOfDaysOpen = noOfDaysOpen;
+}
+
+public String getCategory() {
+	return category;
+}
+
+public void setCategory(String category) {
+	this.category = category;
+}
+
+public String getCriticality() {
+	return criticality;
+}
+
+public void setCriticality(String criticality) {
+	this.criticality = criticality;
+}
+
+public Date getCriticalityDate() {
+	return criticalityDate;
+}
+
+public void setCriticalityDate(Date criticalityDate) {
+	this.criticalityDate = criticalityDate;
+}
+
+public String getCustomerEval() {
+	return customerEval;
+}
+
+public void setCustomerEval(String customerEval) {
+	this.customerEval = customerEval;
+}
 
 public Object get_id() {
 	return _id;

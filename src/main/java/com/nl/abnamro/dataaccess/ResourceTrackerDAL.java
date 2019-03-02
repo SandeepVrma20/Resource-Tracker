@@ -3,6 +3,7 @@ package com.nl.abnamro.dataaccess;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.nl.abnamro.entity.LoginDetailsJO;
 import com.nl.abnamro.entity.RequirementDetails;
@@ -49,7 +50,7 @@ public interface ResourceTrackerDAL {
 	
 	public List<TotalRequirements> findMonthlyGroupedReq();
 
-
+	public Map<String,Object> forgetPassword(LoginDetailsJO loginDetails);
 
 
 

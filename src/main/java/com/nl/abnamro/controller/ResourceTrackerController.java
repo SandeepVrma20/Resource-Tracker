@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -22,6 +23,7 @@ import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -37,6 +39,8 @@ import com.nl.abnamro.entity.RequirementSearchJO;
 import com.nl.abnamro.entity.ResourceDetails;
 import com.nl.abnamro.entity.ResourceDetailsJO;
 import com.nl.abnamro.entity.TotalRequirements;
+
+import io.swagger.annotations.ApiOperation;
 
 /**
  * @author C33129 
@@ -59,7 +63,7 @@ public class ResourceTrackerController {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			
-			List<RequirementDetails> requiermentDetailsList = mapper.readValue(new File("C:\\Users\\C33129\\AWS\\convertcsv.json"), new TypeReference<List<RequirementDetails>>(){});
+			List<RequirementDetails> requiermentDetailsList = mapper.readValue(new File("C:\\Users\\C33129\\Development\\dev\\InputFiles\\JanEndDataJson.json"), new TypeReference<List<RequirementDetails>>(){});
 	       	for(RequirementDetails requiermentDetails :requiermentDetailsList){
 				resoucerTrackerDal.saveRequierments(requiermentDetails);
 			}
@@ -69,7 +73,7 @@ public class ResourceTrackerController {
 		}
 }
 	
-
+	@ApiOperation(value = "Get List of all Requirements")
 	@RequestMapping(value="/requirements")
 	public List<RequirementDetailsJO> getAllRequierments() throws IOException{
 		System.out.println("inside get");
@@ -179,8 +183,8 @@ public class ResourceTrackerController {
 		return responseMsg;
 	}
 	
-	
-	@RequestMapping(value="/user/employeeId",method=RequestMethod.POST,headers="Accept=application/json")
+	//@ApiOperation(value = "Get Authorized user" ,response = LoginDetailsJO.class)
+	@RequestMapping(value="/user/employeeId",method=RequestMethod.POST, headers="Accept=application/json")
 	public Map<String,Object> getUserById(@RequestBody LoginDetailsJO loginDetails,
 			HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException{
 		Map<String,Object> responseMsg=new HashMap<String,Object>();
@@ -191,6 +195,7 @@ public class ResourceTrackerController {
 			responseMsg.put("isSuccess", "true");
 			responseMsg.put("employeeId", loginDetail.getEmployeeId());
 			responseMsg.put("firstName", loginDetail.getFirstName());
+			responseMsg.put("isAdmin", loginDetail.isAdmin());
 		}else{
 			responseMsg.put("response", "User Id and Password are incorrect");
 			responseMsg.put("isSuccess", "false");
@@ -199,6 +204,23 @@ public class ResourceTrackerController {
 		return responseMsg;
 	}
 
+	
+	@RequestMapping(value="/user/changePassword" ,method=RequestMethod.POST, headers = "Accept=application/json")
+	public Map<String,Object> forgetPassword(@RequestBody LoginDetailsJO loginDetails,
+			HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException{
+		Map<String,Object> responseMsg=new HashMap<String,Object>();
+		responseMsg=resoucerTrackerDal.forgetPassword(loginDetails);
+		System.out.println("inside forget password");
+		/*responseMsg.put("flag", true);
+		responseMsg.put("response", response);
+		*//*if(isSaved){
+			responseMsg.put("response", "User Saved Successfully with employee id  " + loginDetails.getEmployeeId());
+		}else{
+			responseMsg.put("response", "User is already present in the system with employee id " + loginDetails.getEmployeeId());
+		}*/
+		
+		return responseMsg;
+	}
 	
 	@RequestMapping(value="/requirements/autoFilled",method=RequestMethod.GET,headers="Accept=application/json")
 	public Map<String,List<String>>  getAllPreFilledData() throws IOException{
@@ -228,9 +250,47 @@ public class ResourceTrackerController {
 	}
 	
 	@RequestMapping(value="/requirements/monthwise",method=RequestMethod.GET,headers="Accept=application/json")
-	public List<TotalRequirements> getGrpRequirementByMonth() throws IOException{
+	public  Map<String,Object[]> getGrpRequirementByMonth() throws IOException{
+		List<String> monthYearList=new ArrayList<>();
+		List<Integer> openOffReqCount = new ArrayList<>();
+		List<Integer> closeOffReqCount = new ArrayList<>();
+		List<Integer> openOnReqCount = new ArrayList<>();
+		List<Integer> closeOnReqCount = new ArrayList<>();
+		List<Integer> onshoreReqCount = new ArrayList<>();
+		List<Integer> offshoreReqCount = new ArrayList<>();
+		
+		Map<String,Object[]> barChartData=new HashMap<String,Object[]>();
+		
 		List<TotalRequirements> requierments=resoucerTrackerDal.findMonthlyGroupedReq();
-		return requierments;
+		for(TotalRequirements req:requierments){
+			monthYearList.add(req.getMonthYear());
+			openOffReqCount.add(req.getOpenOffReqCount());
+			closeOffReqCount.add(req.getCloseOffReqCount());
+			openOnReqCount.add(req.getOpenOnReqCount());
+			closeOnReqCount.add(req.getCloseOnReqCount());
+			onshoreReqCount.add(req.getOnshoreReqCount());
+			offshoreReqCount.add(req.getOffshoreReqCount());
+		}
+		
+		String [] monthYearListArray=monthYearList.toArray(new String[0]);
+		Integer[] openOffReqCountList = openOffReqCount.toArray(new Integer[openOffReqCount.size()]);
+		Integer[] closeOffReqCountList =closeOffReqCount.toArray(new Integer[closeOffReqCount.size()]);
+		Integer[] openOnReqCountList = openOnReqCount.toArray(new Integer[openOnReqCount.size()]);
+		Integer[] closeOnReqCountList = closeOnReqCount.toArray(new Integer[closeOnReqCount.size()]);
+		Integer[] offshoreReqCountList = onshoreReqCount.toArray(new Integer[onshoreReqCount.size()]);
+		Integer[] onshoreReqCountList = offshoreReqCount.toArray(new Integer[offshoreReqCount.size()]);
+		
+		
+		
+		barChartData.put("MonthYear", monthYearListArray);
+		barChartData.put("OpenOffshore", openOffReqCountList);
+		barChartData.put("CloseOffshore", closeOffReqCountList);
+		barChartData.put("OpenOnshore", openOnReqCountList);
+		barChartData.put("CloseOnshore", closeOnReqCountList);
+		barChartData.put("totalOffshore", offshoreReqCountList);
+		barChartData.put("totalOnshore", onshoreReqCountList);
+		
+		return barChartData;
 	}
 	
 	
