@@ -21,7 +21,7 @@ public class SwaggerConfig {
         		.apiInfo(metaData())
                 .select()                 
                 .apis(RequestHandlerSelectors.basePackage("com.nl.abnamro"))
-                .paths(regex("/rest/users.*"))
+                .paths(regex("/"))
                 .build();
     }
 	

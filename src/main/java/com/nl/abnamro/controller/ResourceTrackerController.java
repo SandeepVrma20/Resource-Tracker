@@ -46,7 +46,7 @@ import io.swagger.annotations.ApiOperation;
  * @author C33129 
  *
  */
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping(value = "/api")
 public class ResourceTrackerController {
@@ -57,6 +57,11 @@ public class ResourceTrackerController {
 		this.resoucerTrackerDal=resoucerTrackerDal;
 
 	}
+	
+	  @RequestMapping(value = "/home", method = RequestMethod.GET)
+	  public String homepage() {
+	    return "index";
+	  }
 
 	@RequestMapping(value="/jsonToJava")
 	public void convertJsonToJava(){
